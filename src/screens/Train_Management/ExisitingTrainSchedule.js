@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import NavBar from '../../components/NavBar';
 
 export default function ExisitingTrainSchedule() {
   const navigate = useNavigate();
@@ -18,8 +19,9 @@ export default function ExisitingTrainSchedule() {
   }
   return (
     <>
+    <NavBar /> {/* Include the NavBar component at the top */}
       <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-100">
               Train Schedules

@@ -15,7 +15,7 @@ const navigation = [
   { name: 'Home', href: '#', current: true },
   { name: 'Traveler', href: '/createTraveler', current: false },
   { name: 'Tickets', href: '/createTicket', current: false },
-  { name: 'Trains', href: '#', current: false },
+  { name: 'Trains', href: '/trainschedule', current: false },
 ]
 const userNavigation = [
   { name: 'Sign out', href: '#' },
