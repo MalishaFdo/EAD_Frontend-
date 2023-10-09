@@ -1,151 +1,216 @@
-import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Switch } from '@headlessui/react'
-import Dropdown from '../components/DropDown';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 export default function Register() {
-  const [agreed, setAgreed] = useState(false)
+  const navigate = useNavigate();
+
+  // State to hold the NIC input value and error message
+  const [nic, setNic] = useState("");
+  const [nicError, setNicError] = useState("");
+
+  const handleNicChange = (event) => {
+      const value = event.target.value;
+      setNic(value);
+      // Regular expression to validate NIC (10 digits + V)
+      const nicRegex = /^[0-9]{10}V$/;
+      if (!nicRegex.test(value)) {
+          setNicError("NIC must have 10 digits followed by 'V'");
+      } else {
+          setNicError("");
+      }
+  };
+
+  const handleSubmit = (event) => {
+      event.preventDefault();
+
+      // Check if NIC is valid before submitting the form
+      if (!nicError) {
+          // Perform form submission logic here
+          console.log("Form submitted with NIC: ", nic);
+          // You can navigate to another page or perform other actions here
+          navigate("/success"); // Example navigation
+      }
+  };
 
   return (
-      <div className="isolate bg-slate-900 px-6 py-24 sm:py-32 lg:px-8">
-        <div
-            className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
-            aria-hidden="true"
-        >
-          <div
-              className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
-              style={{
-                clipPath:
-                    'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-              }}
-          />
-        </div>
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Register</h2>
-          <p className="mt-2 text-lg leading-8 text-white">
-            Aute magna irure deserunt veniam aliqua magna enim voluptate.
-          </p>
-        </div>
-        <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-            <div>
-              <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-white">
-                First name
-              </label>
-              <div className="mt-2.5">
-                <input
-                    type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+      <>
+          <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
+              <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
+                  <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                      <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-100">
+                          Registration
+                      </h2>
+                  </div>
+
+                  <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                      <form className="space-y-6" onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                      <div>
+                              <label
+                                  htmlFor="name"
+                                  className="block text-sm font-medium leading-6 text-slate-100"
+                              >
+                                  Name
+                              </label>
+                              <div className="mt-2.5">
+                                  <input
+                                      id="name"
+                                      name="name"
+                                      type="text"
+                                      autoComplete="name"
+                                      required
+                                      className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  />
+                              </div>
+                          </div>
+
+                          <div>
+                              <label
+                                  htmlFor="nic"
+                                  className="block text-sm font-medium leading-6 text-slate-100"
+                              >
+                                   National ID
+                              </label>
+                              <div className="mt-2.5">
+                                  <input
+                                      id="nic"
+                                      name="nic"
+                                      type="text"
+                                      value={nic}
+                                      onChange={handleNicChange}
+                                      autoComplete="nic"
+                                      required
+                                      className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${nicError ? "border-red-500" : ""
+                                          }`}
+                                  />
+                                  {nicError && (
+                                      <p className="mt-1 text-red-500 text-sm">
+                                          {nicError}
+                                      </p>
+                                  )}
+                              </div>
+                          </div>
+                          </div>        
+                          <div>
+                              <label
+                                  htmlFor="email"
+                                  className="block text-sm font-medium leading-6 text-slate-100"
+                              >
+                                  Email address
+                              </label>
+                              <div className="mt-2">
+                                  <input
+                                      id="email"
+                                      name="email"
+                                      type="email"
+                                      autoComplete="email"
+                                      required
+                                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  />
+                              </div>
+                          </div>
+
+                          <div>
+                                <label id="listbox-label" class="block text-sm font-medium leading-6 text-white">User Type</label>
+                                <div class="relative mt-2">
+                                    <button type="button" class="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
+                                        <span class="flex items-center">
+                                            <span class="ml-3 block truncate">Choose....</span>
+                                        </span>
+                                        <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+                                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                         <ul class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+                                        <li class="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option">
+                                            <div class="flex items-center">
+
+                                                <span class="font-normal ml-3 block truncate">Back Officer</span>
+                                                
+                                            </div>
+
+                                            <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
+                                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                        </li>
+                                        <li class="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option">
+                                            <div class="flex items-center">
+
+                                                <span class="font-normal ml-3 block truncate">Travel Agent</span>
+                                                
+                                            </div>
+
+                                            <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
+                                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                          <div>
+                            
+                              <div className="flex items-center justify-between">
+                  
+                                  <label
+                                      htmlFor="password"
+                                      className="block text-sm font-medium leading-6 text-slate-100"
+                                  >
+                                      Password
+                                  </label>
+                              </div>
+                              <div className="mt-2.5">
+                                  <input
+                                      id="password"
+                                      name="password"
+                                      type="password"
+                                      autoComplete="current-password"
+                                      required
+                                      className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  />
+                              </div>
+                          </div>
+                                    
+                          <div>
+                              <div className="flex items-center justify-between">
+                              
+                                  <label
+                                      htmlFor="cpassword"
+                                      className="block text-sm font-medium leading-6 text-slate-100"
+                                  >
+                                      Confirm Password
+                                  </label>
+                              </div>
+                              <div className="mt-2.5">
+                                  <input
+                                      id="cpassword"
+                                      name="cpassword"
+                                      type="password"
+                                      autoComplete="confirm-password"
+                                      required
+                                      className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                  />
+                              </div>
+                          </div>
+                          
+                          <div>
+                              <button
+                                  type="submit"
+                                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                              >
+                                  Sign Up
+                              </button>
+                          </div>
+                      </form>
+                  </div>
               </div>
-            </div>
-            <div>
-              <label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-white">
-                National ID
-              </label>
-              <div className="mt-2.5">
-                <input
-                    type="text"
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label htmlFor="company" className="block text-sm font-semibold leading-6 text-white">
-                Email
-              </label>
-              <div className="mt-2.5">
-                <input
-                    type="text"
-                    name="company"
-                    id="company"
-                    autoComplete="organization"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label htmlFor="email" className="block text-sm font-semibold leading-6 text-white">
-                Email
-              </label>
-              <div className="mt-2.5">
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-white">
-                Phone number
-              </label>
-              <div className="relative mt-2.5">
-                <input
-                    type="tel"
-                    name="phone-number"
-                    id="phone-number"
-                    autoComplete="tel"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-white">
-                  User Type
-                </label>
-                <Dropdown></Dropdown>
-              </div>
-            </div>
-            <Switch.Group as="div" className="flex gap-x-4 sm:col-span-2">
-              <div className="flex h-6 items-center">
-                <Switch
-                    checked={agreed}
-                    onChange={setAgreed}
-                    className={classNames(
-                        agreed ? 'bg-indigo-600' : 'bg-gray-200',
-                        'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                    )}
-                >
-                  <span className="sr-only">Agree to policies</span>
-                  <span
-                      aria-hidden="true"
-                      className={classNames(
-                          agreed ? 'translate-x-3.5' : 'translate-x-0',
-                          'h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out'
-                      )}
-                  />
-                </Switch>
-              </div>
-              <Switch.Label className="text-sm leading-6 text-gray-600">
-                By selecting this, you agree to our{' '}
-                <a href="#" className="font-semibold text-indigo-600">
-                  privacy&nbsp;policy
-                </a>
-                .
-              </Switch.Label>
-            </Switch.Group>
           </div>
-          <div className="mt-10">
-            <button
-                type="submit"
-                className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Let's talk
-            </button>
-          </div>
-        </form>
-      </div>
-  )
+      </>
+  );
 }
