@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import NavBar from '../../components/NavBar';
+import NavBar from "../../components/NavBar";
 
 export default function UpdateTrainSchedule() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   function handleClick() {
     navigate("/schedules");
   }
   return (
     <>
-    <NavBar /> {/* Include the NavBar component at the top */}
+      <NavBar /> {/* Include the NavBar component at the top */}
       <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6  lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -139,16 +139,8 @@ export default function UpdateTrainSchedule() {
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="Status"
-                  className="block text-sm font-medium leading-6 text-slate-100"
-                >
-                  Status
-                </label>
-              </div>
               <div className="mt-2">
-                <div className="flex space-x-4">
+                <div className="flex justify-center space-x-4">
                   <label className="flex items-center space-x-2">
                     <input
                       type="radio"
