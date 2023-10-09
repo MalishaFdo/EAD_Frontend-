@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./screens/Login.js";
 import Register from "./screens/Register";
 import Dashboard from './components/Dashboard';
+import Home from "./screens/Home";
 
 
 /* Train_Management */
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/home" element={<Home />} />
         
         {/* Train_Management */}
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
