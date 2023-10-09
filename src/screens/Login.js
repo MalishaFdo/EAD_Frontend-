@@ -4,7 +4,7 @@ import logo from "../images/logo.png"
 export default function Login() {
   const navigate = useNavigate();
   function handleClick() {
-    navigate("/dashboard");
+    navigate("/home");
   }
 
   return (
