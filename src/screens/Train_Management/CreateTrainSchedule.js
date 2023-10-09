@@ -62,26 +62,6 @@ export default function CreateTrainSchedule() {
               <div>
                 <div className="flex items-center justify-between">
                   <label
-                    htmlFor="seats"
-                    className="block text-sm font-medium leading-6 text-slate-100"
-                  >
-                    No of seats count
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="seats"
-                    name="seats"
-                    type="number"
-                    autoComplete="seats"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
                     htmlFor="date"
                     className="block text-sm font-medium leading-6 text-slate-100"
                   >
@@ -137,29 +117,6 @@ export default function CreateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
-                </div>
-              </div>
-              <div className="flex items-center justify-between"></div>
-              <div className="mt-2">
-                <div className="flex justify-center space-x-4">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="Status"
-                      value="Active"
-                      className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="text-slate-100">Active</span>
-                  </label>
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="Status"
-                      value="Archive"
-                      className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="text-slate-100">Archive</span>
-                  </label>
                 </div>
               </div>
               <div>
