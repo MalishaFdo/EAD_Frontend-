@@ -114,7 +114,7 @@ export default function ExisitingTrainSchedule() {
               </td>
               <td class="px-6 py-4">
                 <a
-                  href="#"
+                  href="/updateschedule"
                   class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                 >
                   {/* <!-- EditICon -->   */}

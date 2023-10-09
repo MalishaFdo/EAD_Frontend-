@@ -6,17 +6,17 @@ import Register from "./screens/Register";
 import Dashboard from './components/Dashboard';
 
 
-//  {/* Train_Management */}
+/* Train_Management */
 import CreateTrainSchedule from "./screens/Train_Management/CreateTrainSchedule";
 import UpdateTrainSchedule from "./screens/Train_Management/UpdateTrainSchedule";
 import ExisitingTrainSchedule from "./screens/Train_Management/ExisitingTrainSchedule";
  
-//  {/* Ticket_Management */}
+/* Ticket_Management */
 import CreateTicket from './screens/Ticket_Management/CreateTicket';
 import UpdateTicket from "./screens/Ticket_Management/UpdateTicket";
 import TicketDetails from "./screens/Ticket_Management/TicketDetails";
 
-// {/* Traveler_Management */}
+/* Traveler_Management */
 import CreateTraveler from "./screens/Traveler_Management/CreateTraveler";
 import UpdateTraveler from "./screens/Traveler_Management/UpdateTraveler";
 import TravelInfo from "./screens/Traveler_Management/TravelInfo";
