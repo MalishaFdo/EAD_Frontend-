@@ -70,9 +70,6 @@ export default function ExisitingTrainSchedule() {
                 Destination
               </th>
               <th scope="col" class="px-6 py-3">
-                Seats
-              </th>
-              <th scope="col" class="px-6 py-3">
                 Date
               </th>
               <th scope="col" class="px-6 py-3">
@@ -102,7 +99,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -170,7 +166,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -238,7 +233,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -306,7 +300,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -374,7 +367,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -442,7 +434,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -510,7 +501,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
@@ -578,7 +568,6 @@ export default function ExisitingTrainSchedule() {
                 </div>
               </th>
               <td class="px-6 py-4">Kandy</td>
-              <td class="px-6 py-4">100</td>
               <td class="px-6 py-4">09/10/2023</td>
               <td class="px-6 py-4">08:00 AM</td>
               <td class="px-6 py-4">10:00 AM</td>
