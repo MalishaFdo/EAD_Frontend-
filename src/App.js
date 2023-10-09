@@ -12,6 +12,7 @@ import UpdateTicket from "./screens/Ticket_Management/UpdateTicket";
 import CreateTraveler from "./screens/Traveler_Management/CreateTraveler";
 import UpdateTraveler from "./screens/Traveler_Management/UpdateTraveler";
 import TravelInfo from "./screens/Traveler_Management/TravelInfo";
+import NavBar from "./components/NavBar";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/navbar" element={<NavBar />} />
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
         <Route path="/updateschedule" element={<UpdateTrainSchedule />} />
         <Route path="/schedule" element={<ExisitingTrainSchedule />} />

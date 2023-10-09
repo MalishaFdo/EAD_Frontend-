@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import NavBar from '../../components/NavBar';
 
 export default function UpdateTraveler() {
     return (
         <>
+        <NavBar /> {/* Include the NavBar component at the top */}
             <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
                 <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -111,6 +113,30 @@ export default function UpdateTraveler() {
                                     />
                                 </div>
                             </div>
+
+                            <div className="mt-2">
+                                <div className="flex justify-center space-x-4">
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            name="Status"
+                                            value="Active"
+                                            className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                                        />
+                                        <span className="text-slate-100">Activate</span>
+                                    </label>
+                                    <label className="flex items-center space-x-2">
+                                        <input
+                                            type="radio"
+                                            name="Status"
+                                            value="Deactive"
+                                            className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                                        />
+                                        <span className="text-slate-100">Deactivate</span>
+                                    </label>
+                                </div>
+                            </div>
+
 
                             <div>
                                 <button
