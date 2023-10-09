@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const navigate = useNavigate();
   function handleClick() {
-    navigate("/register");
+    navigate("/dashboard");
   }
 
   return (
@@ -83,12 +83,12 @@ export default function Login() {
             </form>
 
             <p className="mt-10 text-center text-sm text-slate-100">
-              Not a member?{" "}
+              Not Having an Account?{" "}
               <a
-                href="#"
+                href="/register"
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               >
-                Start a 14 day free trial
+                Register Here !!!
               </a>
             </p>
           </div>
