@@ -8,6 +8,7 @@ import Home from "./screens/Home";
 
 
 /* Train_Management */
+import CreateTrain from "./screens/Train_Management/CreateTrain";
 import CreateTrainSchedule from "./screens/Train_Management/CreateTrainSchedule";
 import UpdateTrainSchedule from "./screens/Train_Management/UpdateTrainSchedule";
 import ExisitingTrainSchedule from "./screens/Train_Management/ExisitingTrainSchedule";
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         
         {/* Train_Management */}
+        <Route path="/train" element={<CreateTrain />} />
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
         <Route path="/updateschedule" element={<UpdateTrainSchedule />} />
         <Route path="/schedule" element={<ExisitingTrainSchedule />} />
