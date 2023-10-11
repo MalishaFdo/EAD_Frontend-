@@ -59,11 +59,11 @@ export default function NavBar() {
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-            <img
-              className="mx-auto h-10 w-auto"
-              src={logo}
-              alt="EAD TRAVEL"
-            />
+              <img
+                className="mx-auto h-10 w-auto"
+                src={logo}
+                alt="EAD TRAVEL"
+              />
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
@@ -81,12 +81,7 @@ export default function NavBar() {
                 >
                   Traveler
                 </a>
-                <a
-                  href="/createTicket"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                >
-                  Tickets
-                </a>
+
                 <a
                   href="/train"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
@@ -98,6 +93,12 @@ export default function NavBar() {
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Train Schedule
+                </a>
+                <a
+                  href="/reserve"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                >
+                  Book
                 </a>
               </div>
             </div>
