@@ -22,6 +22,7 @@ import TicketDetails from "./screens/Ticket_Management/TicketDetails";
 import CreateTraveler from "./screens/Traveler_Management/CreateTraveler";
 import UpdateTraveler from "./screens/Traveler_Management/UpdateTraveler";
 import TravelInfo from "./screens/Traveler_Management/TravelInfo";
+import Reservation from "./screens/Ticket_Management/Reservation";
 
 
 export default function App() {
@@ -36,13 +37,14 @@ export default function App() {
         {/* Train_Management */}
         <Route path="/train" element={<CreateTrain />} />
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
-        <Route path="/updateschedule" element={<UpdateTrainSchedule />} />
+        <Route path="/updateschedule/:id" element={<UpdateTrainSchedule />} />
         <Route path="/schedule" element={<ExisitingTrainSchedule />} />
 
         {/* Ticket_Management */}
         <Route path="/createTicket" element={<CreateTicket />} /> 
         <Route path="/updateTicket" element={<UpdateTicket />} /> 
         <Route path="/details" element={<TicketDetails />} /> 
+        <Route path="/reserve" element={<Reservation />} /> 
 
         {/* Traveler_Management */}
         <Route path="/createTraveler" element={<CreateTraveler />} /> 
