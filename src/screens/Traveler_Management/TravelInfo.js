@@ -32,6 +32,17 @@ export default function TravelInfo() {
     navigate(`/updateuser/${id}`);
   }
 
+  function handleDeleteClick(nic) {
+    // Find the index of the row to delete
+    const dataIndex = data.findIndex(item => item.nic === nic);
+    if (dataIndex !== -1) {
+      // Create a new array without the row to delete
+      const newData = [...data];
+      newData.splice(dataIndex, 1);
+      setData(newData);
+    }
+  }
+
   return (
     <>
       <NavBar /> {/* Include the NavBar component at the top */}
@@ -156,6 +167,7 @@ export default function TravelInfo() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => handleDeleteClick(item.nic)}
                     >
                       {/* Delete Icon */}
                       <svg
