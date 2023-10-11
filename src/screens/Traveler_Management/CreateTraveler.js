@@ -11,7 +11,7 @@ export default function CreateTraveler() {
     name: "",
     email: "",
     password: "",
-    confirmPassword: "", 
+    confirmPassword: "",
   });
 
   const sendData = async () => {
@@ -23,7 +23,7 @@ export default function CreateTraveler() {
         password: formData.password,
       };
 
-     
+
 
 
       const headers = {
@@ -49,7 +49,7 @@ export default function CreateTraveler() {
         return;
       }
     }
-};
+  };
 
   return (
     <>
