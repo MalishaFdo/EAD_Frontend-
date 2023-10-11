@@ -151,13 +151,13 @@ export default function UpdateTicket() {
                                             className="text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9"
                                             id="listbox-option-0"
                                             role="option"
-                                            onClick={() => handleOptionSelect('Wade Cooper')}
+                                            onClick={() => handleOptionSelect('Udarata Manike : 8:30 AM')}
                                         >
                                             <div className="flex items-center">
-                                                <span className="font-normal ml-3 block truncate">Wade Cooper</span>
+                                                <span className="font-normal ml-3 block truncate">Udarata Manike : 8:30 AM</span>
                                             </div>
                                             <div className="flex items-center">
-                                                <span className="font-normal ml-3 block truncate">Wade Cooper</span>
+                                                <span className="font-normal ml-3 block truncate">Udarata Manike : 8:30 AM</span>
                                             </div>
                                             <span className="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
                                                 <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

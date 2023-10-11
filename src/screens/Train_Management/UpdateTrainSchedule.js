@@ -1,17 +1,78 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
+import axios from 'axios';
+import { getByIdTrainSchedules, updateByIdTrainSchedules } from "../../shared/apiUrls";
 
 export default function UpdateTrainSchedule() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [formData, setFormData] = useState({
+    departure: "",
+    destination: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+  });
+  const [ID, setId] = useState("")
+
+  const fetchData = async (id) => {
+    try {
+      const response = await axios.get(getByIdTrainSchedules(id));
+      const { data } = response.data;
+
+      console.log("DATAAA", data);
+      setFormData({
+        departure: data.departure,
+        destination: data.destination,
+        date: data.scheduleDate,
+        startTime: data.startTime,
+        endTime: data.endTime,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const id = location.pathname.split("/")[2];
+    setId(id);
+    if (id) {
+      fetchData(id);
+    }
+  }, [location.pathname]);
+
   function handleClick() {
-    navigate("/schedules");
+    navigate("/schedule");
   }
+
+  function removeTimeFromDate(isoString) {
+    const datePart = isoString.split('T')[0];
+    return datePart.toString();
+  }
+
+  const updateData = async () => {
+    localStorage.setItem("wwwww", JSON.stringify(ID));
+    try {
+      setFormData({
+        departure: formData.departure,
+        destination: formData.destination,
+        date: formData.scheduleDate,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+      });
+      const response = await axios.patch(updateByIdTrainSchedules(ID), formData).then(result => console.log(result)).catch(error => console.log(error));
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <>
-      <NavBar /> {/* Include the NavBar component at the top */}
+      <NavBar />
       <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6  lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-100">
               Update Train Schedule
@@ -19,7 +80,7 @@ export default function UpdateTrainSchedule() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6">
               <div>
                 <label
                   htmlFor="departure"
@@ -35,6 +96,8 @@ export default function UpdateTrainSchedule() {
                     autoComplete="departure"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.departure}
+                    onChange={(e) => setFormData({ ...formData, departure: e.target.value })}
                   />
                 </div>
               </div>
@@ -56,9 +119,12 @@ export default function UpdateTrainSchedule() {
                     autoComplete="destination"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.destination}
+                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
                   />
                 </div>
               </div>
+
               <div>
                 <div className="flex items-center justify-between">
                   <label
@@ -76,9 +142,12 @@ export default function UpdateTrainSchedule() {
                     autoComplete="date"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={removeTimeFromDate(formData.date)}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   />
                 </div>
               </div>
+
               <div>
                 <div className="flex items-center justify-between">
                   <label
@@ -96,9 +165,12 @@ export default function UpdateTrainSchedule() {
                     autoComplete="startTime"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.startTime}
+                    onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
                   />
                 </div>
               </div>
+
               <div>
                 <div className="flex items-center justify-between">
                   <label
@@ -116,14 +188,17 @@ export default function UpdateTrainSchedule() {
                     autoComplete="endTime"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.endTime}
+                    onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
                   />
                 </div>
               </div>
+
               <div>
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={handleClick}
+                  onClick={updateData}
                 >
                   Submit
                 </button>

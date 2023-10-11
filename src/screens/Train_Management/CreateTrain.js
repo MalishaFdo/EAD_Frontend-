@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { json, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
 import axios from 'axios';
 import { createTrainUrlPost } from "../../shared/apiUrls";
@@ -7,46 +7,51 @@ import { createTrainUrlPost } from "../../shared/apiUrls";
 export default function CreateTrain() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    trainid: "",
     trainName: "",
     seatCount: "",
-    scheduleId: null, // Initially set to null
   });
 
-  async function SubmitData() {
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+
+  const fetchData = async () => {
     try {
-      // Prepare the data object to send to the backend
-      const requestData = {
-        trainid: formData.trainid,
-        trainName: formData.trainName,
-        seatCount: formData.seatCount,
-        scheduleId: formData.scheduleId,
-      };
+      if (formData.trainName && formData.seatCount) {
+        const requestData = {
+          trainName: formData.trainName,
+          seatCount: formData.seatCount,
+        };
 
-      const headers = {
-        'Content-Type': 'application/json;charset=UTF-8',
-      };
+        const headers = {
+          "Content-Type": "application/json;charset=UTF-8",
+        };
 
-      // Make a POST request to your backend API using Axios
-      const response = await axios.post(createTrainUrlPost(), requestData, { headers });
-      const test = await axios.get("https://localhost:44346/api/TrainSchedule/getAll");
-      console.log("*************", test);
+        const response = await axios.post(
+          createTrainUrlPost(),
+          requestData,
+          { headers }
+        );
 
-      // Assuming the backend returns the created train with an ID
-      if (response.status === 201) { // Assuming a successful creation status code
-        const createdTrain = response.data;
-        // Store trainid in local storage
-        localStorage.setItem("trainid", createdTrain.trainid);
-        navigate("/trainSchedule"); // Redirect to the train schedule page
-      } else {
-        // Handle error
-        console.error("Error creating train.");
+        const createdTrain = response.data.data._id;
+        localStorage.setItem("trainId", createdTrain);
+
+        //navigate("/trainschedule");
       }
     } catch (error) {
-      // Handle any errors that occurred during the API request
-      console.error("Error creating train:", error);
+      console.error("Error submitting data:", error);
     }
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  if (formData.seatCount.length < 1) {
+    return;
   }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   return (
     <>
@@ -109,8 +114,7 @@ export default function CreateTrain() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={SubmitData}
-                >
+                  onClick={fetchData}>
                   Sumbit
                 </button>
               </div>
