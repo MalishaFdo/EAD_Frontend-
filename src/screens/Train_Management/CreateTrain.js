@@ -1,12 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import NavBar from "../../components/NavBar";
+import axios from 'axios';
+import { createTrainUrlPost } from "../../shared/apiUrls";
 
 export default function CreateTrain() {
   const navigate = useNavigate();
-  function handleClick() {
-    navigate("/");
+  const [formData, setFormData] = useState({
+    trainid: "",
+    trainName: "",
+    seatCount:"",
+    scheduleId: null,
+  });
+
+  async function SubmitData() {
+    try {
+      const requestData = {
+        trainName: formData.trainName,
+        seatCount: formData.seatCount,
+      };
+
+      const headers = {
+        'Content-Type': 'application/json;charset=UTF-8'
+      };
+
+      const response = await axios.post(createTrainUrlPost(), requestData, {headers});
+
+      if (response.status == 201) {
+        const createdTrain = response.data;
+
+        localStorage.setItem("trainid", createdTrain.trainid);
+        navigate("/trainSchedule")
+      } else {
+        console.error("Error creating train");
+      }
+    } catch (error) {
+      console.error("Error creating train:", error);
+    }
   }
+  
   return (
     <>
       <NavBar /> {/* Include the NavBar component at the top */}

@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import { createTrainUrl,createTrainUrlPost } from './apiUrls';
 
 const useApiResult = (request) => {
   const [results, setResults] = useState(null);
@@ -20,4 +21,25 @@ const useApiResult = (request) => {
   return [results, error];
 };
 
-export default useApiResult;
+const createTrain = async (data) => {
+  try {
+    const response = await fetch(createTrainUrlPost(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      throw new Error('Error creating train: ' + (await response.text()));
+    }
+  }
+  catch (error) {
+    throw new Error('Error creating train: ' + error.message);
+  }
+};
+
+export default {useApiResult, createTrain };
