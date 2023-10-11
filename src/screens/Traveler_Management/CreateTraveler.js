@@ -1,37 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
+import axios from 'axios';
+import { createUserUrlPost } from "../../shared/apiUrls";
 
 export default function CreateTraveler() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    nic: "",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "", 
+  });
 
-  // State to hold the NIC input value and error message
-  const [nic, setNic] = useState("");
-  const [nicError, setNicError] = useState("");
+  const sendData = async () => {
+    try {
+      const requestData = {
+        nic: formData.nic,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      };
 
-  const handleNicChange = (event) => {
-    const value = event.target.value;
-    setNic(value);
-    // Regular expression to validate NIC (10 digits + V)
-    const nicRegex = /^[0-9]{10}V$/;
-    if (!nicRegex.test(value)) {
-      setNicError("NIC must have 10 digits followed by 'V'");
-    } else {
-      setNicError("");
+     
+
+
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+
+      };
+
+      await passwordMatch(formData.password, formData.confirmPassword);
+
+      await axios.post(
+        createUserUrlPost(),
+        requestData,
+        { headers }
+      );
+      navigate("/schedule");
     }
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Check if NIC is valid before submitting the form
-    if (!nicError) {
-      // Perform form submission logic here
-      console.log("Form submitted with NIC: ", nic);
-      // You can navigate to another page or perform other actions here
-      navigate("/success"); // Example navigation
+    catch (error) {
+      console.error("Error submitting data:", error);
     }
-  };
+
+    async function passwordMatch(password, confirmPassword) {
+      if (confirmPassword == password) {
+        return;
+      }
+    }
+};
 
   return (
     <>
@@ -45,7 +63,7 @@ export default function CreateTraveler() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6">
               <div>
                 <label
                   htmlFor="nic"
@@ -58,17 +76,11 @@ export default function CreateTraveler() {
                     id="nic"
                     name="nic"
                     type="text"
-                    value={nic}
-                    onChange={handleNicChange}
                     autoComplete="nic"
                     required
-                    className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
-                      nicError ? "border-red-500" : ""
-                    }`}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setFormData({ ...formData, nic: e.target.value })}
                   />
-                  {nicError && (
-                    <p className="mt-1 text-red-500 text-sm">{nicError}</p>
-                  )}
                 </div>
               </div>
 
@@ -87,6 +99,7 @@ export default function CreateTraveler() {
                     autoComplete="name"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
               </div>
@@ -106,6 +119,7 @@ export default function CreateTraveler() {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
                 </div>
               </div>
@@ -127,6 +141,7 @@ export default function CreateTraveler() {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
                 </div>
               </div>
@@ -148,14 +163,15 @@ export default function CreateTraveler() {
                     autoComplete="confirm-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   />
                 </div>
               </div>
-
               <div>
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={sendData}
                 >
                   Create
                 </button>

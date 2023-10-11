@@ -36,7 +36,7 @@ export default function App() {
         {/* Train_Management */}
         <Route path="/train" element={<CreateTrain />} />
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
-        <Route path="/updateschedule" element={<UpdateTrainSchedule />} />
+        <Route path="/updateschedule/:id" element={<UpdateTrainSchedule />} />
         <Route path="/schedule" element={<ExisitingTrainSchedule />} />
 
         {/* Ticket_Management */}

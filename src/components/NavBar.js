@@ -88,10 +88,16 @@ export default function NavBar() {
                   Tickets
                 </a>
                 <a
-                  href="/trainschedule"
+                  href="/train"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Trains
+                </a>
+                <a
+                  href="/trainschedule"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                >
+                  Train Schedule
                 </a>
               </div>
             </div>
