@@ -31,6 +31,17 @@ export default function ExistingTrainSchedule() {
     return datePart.toString();
   }
 
+  function handleDeleteClick(_id) {
+    // Find the index of the row to delete
+    const dataIndex = data.findIndex(item => item._id === _id);
+    if (dataIndex !== -1) {
+      // Create a new array without the row to delete
+      const newData = [...data];
+      newData.splice(dataIndex, 1);
+      setData(newData);
+    }
+  }
+
   return (
     <>
       <NavBar />
@@ -165,6 +176,7 @@ export default function ExistingTrainSchedule() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => handleDeleteClick(item._id)}
                     >
                       {/* Delete Icon */}
                       <svg
@@ -185,7 +197,6 @@ export default function ExistingTrainSchedule() {
                       </svg>
                     </a>
                   </td>
-
                 </tr>
               ))}
             </tbody>
