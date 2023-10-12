@@ -23,7 +23,7 @@ export default function CreateTicket() {
         reserveCount: 0,
     });
 
-    //const [nicError, setNicError] = useState(null);
+    const [nicError, setNicError] = useState(null);
 
     // Function to fetch train schedule data based on trainScheduleId
     // const fetchTrainScheduleData = async (trainScheduleId) => {
