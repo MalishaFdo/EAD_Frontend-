@@ -28,13 +28,13 @@ export default function Reservation() {
   }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split('T')[0];
+    const datePart = isoString.split("T")[0];
     return datePart.toString();
   }
 
   function handleDeleteClick(_id) {
     // Find the index of the row to delete
-    const dataIndex = data.findIndex(item => item._id === _id);
+    const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
       const newData = [...data];
@@ -139,7 +139,9 @@ export default function Reservation() {
                   </td>
                   <td className="px-6 py-4">{item.destination}</td>
                   <td className="px-6 py-4">{item.availableSeatCount}</td>
-                  <td className="px-6 py-4">{removeTimeFromDate(item.scheduleDate)}</td>
+                  <td className="px-6 py-4">
+                    {removeTimeFromDate(item.scheduleDate)}
+                  </td>
                   <td className="px-6 py-4">{item.startTime}</td>
                   <td className="px-6 py-4">{item.endTime}</td>
                   <td className="px-6 py-4">
@@ -149,7 +151,17 @@ export default function Reservation() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <Link to={`/createTicket?departure=${item.departure}&destination=${item.destination}&availableSeats=${item.availableSeatCount}&date=${removeTimeFromDate(item.scheduleDate)}&startTime=${item.startTime}&endTime=${item.endTime}&trainScheduleId=${item._id}`}>
+                    <Link
+                      to={`/createTicket?departure=${
+                        item.departure
+                      }&destination=${item.destination}&availableSeats=${
+                        item.availableSeatCount
+                      }&date=${removeTimeFromDate(
+                        item.scheduleDate
+                      )}&startTime=${item.startTime}&endTime=${
+                        item.endTime
+                      }&trainScheduleId=${item._id}`}
+                    >
                       <button
                         type="submit"
                         className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

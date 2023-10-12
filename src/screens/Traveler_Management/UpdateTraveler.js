@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
+import axios from "axios";
 import { getUserById, updateByIdUser } from "../../shared/apiUrls";
 
 export default function UpdateTraveler() {
@@ -14,22 +14,27 @@ export default function UpdateTraveler() {
     password: "",
     nic: "",
     status: "",
-    role: ""
+    role: "",
   });
 
+  const [nicError, setNicError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   const fetchData = async (id) => {
     try {
-      await axios.get(getUserById(id)).then(result => {
-        console.log(result);
-        if (!result.data) {
-          throw new Error("Data is undefined");
-        }
-        setFormData(result.data);
-      }).catch(err => console.log(err));
-
+      await axios
+        .get(getUserById(id))
+        .then((result) => {
+          console.log(result);
+          if (!result.data) {
+            throw new Error("Data is undefined");
+          }
+          setFormData(result.data);
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alert("Error fetching data:" + error.message);
     }
   };
 
@@ -41,9 +46,44 @@ export default function UpdateTraveler() {
 
   function handleClick() {
     navigate("/travelInfo");
+    alert("Data inserted successfully!");
   }
 
   const updateData = async () => {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.nic ||
+      !formData.status
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (!validateNIC(formData.nic)) {
+      alert("Invalid NIC format. Please enter a valid NIC.");
+      return;
+    } else {
+      setNicError(null);
+    }
+
+    if (!validateEmail(formData.email)) {
+      alert("Invalid email address. Please enter a valid email.");
+      return;
+    } else {
+      setEmailError(null);
+    }
+
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    } else {
+      setPasswordError(null);
+    }
+
     try {
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
@@ -55,14 +95,26 @@ export default function UpdateTraveler() {
         email: formData.email,
         password: formData.password,
         role: 0,
-        status: Number(formData.status)
-      }
-      await axios.put(updateByIdUser(ID), data, { headers }).then(result => console.log(result)).catch(error => console.log(error));
+        status: Number(formData.status),
+      };
+      await axios
+        .put(updateByIdUser(ID), data, { headers })
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
       handleClick();
       //}
-
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alert("Error fetching data:" + error.message);
+    }
+
+    function validateNIC(nic) {
+      const nicRegex = /^[0-9]{9}[vV]$/;
+      return nicRegex.test(nic);
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      return emailRegex.test(email);
     }
   };
 
@@ -84,7 +136,7 @@ export default function UpdateTraveler() {
                   htmlFor="nic"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  NIC
+                  National ID
                 </label>
                 <div className="mt-2">
                   <input
@@ -96,8 +148,14 @@ export default function UpdateTraveler() {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.nic}
                     readOnly={true}
-                    onChange={(e) => setFormData({ ...formData, nic: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, nic: e.target.value });
+                      setNicError(null);
+                    }}
                   />
+                  {nicError && (
+                    <p className="text-red-500 text-sm mt-2">{nicError}</p>
+                  )}
                 </div>
               </div>
 
@@ -117,7 +175,9 @@ export default function UpdateTraveler() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -127,7 +187,7 @@ export default function UpdateTraveler() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  Email
+                  Email Address
                 </label>
                 <div className="mt-2">
                   <input
@@ -138,8 +198,15 @@ export default function UpdateTraveler() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      setEmailError(null);
+                    }}
                   />
+
+                  {emailError && (
+                    <p className="text-red-500 text-sm mt-2">{emailError}</p>
+                  )}
                 </div>
               </div>
 
@@ -161,8 +228,13 @@ export default function UpdateTraveler() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+                  )}
                 </div>
               </div>
 
@@ -184,7 +256,12 @@ export default function UpdateTraveler() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -197,7 +274,9 @@ export default function UpdateTraveler() {
                       name="status"
                       value="0"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
                     />
                     <span className="text-slate-100">Activate</span>
                   </label>
@@ -207,7 +286,9 @@ export default function UpdateTraveler() {
                       name="status"
                       value="1"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
                     />
                     <span className="text-slate-100">Deactivate</span>
                   </label>
