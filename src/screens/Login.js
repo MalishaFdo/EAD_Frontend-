@@ -1,22 +1,80 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../images/logo.png"
+import React, { useEffect, useState } from "react";
+import logo from "../images/logo.png";
+import axios from "axios";
+import { createLoginUrlPost } from "../shared/apiUrls";
 
 export default function Login() {
   const navigate = useNavigate();
-  function handleClick() {
-    navigate("/home");
-  }
+  // function handleClick() {
+  //   navigate("/home");
+  // }
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
+  const handleClick = async () => {
+    if (!formData.email || !formData.password) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      alert("Invalid email address. Please enter a valid email.");
+      return;
+    } else {
+      setEmailError(null);
+    }
+
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    } else {
+      setPasswordError(null);
+    }
+    try {
+      const requestData = {
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+
+      await axios.post(
+        createLoginUrlPost(),
+        requestData,
+        { headers },
+        (response) => {
+          // Success callback function
+          alert("Data inserted successfully!");
+          //console.log("Data inserted successfully!");
+          navigate("/home");
+        }
+      );
+    } catch (error) {
+      alert("Error submitting data:" + error.message);
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      return emailRegex.test(email);
+    }
+  };
 
   return (
     <>
       <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-2">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-              className="mx-auto h-20 w-auto"
-              src={logo}
-              alt="EAD TRAVEL"
-            />
+            <img className="mx-auto h-20 w-auto" src={logo} alt="EAD TRAVEL" />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-100">
               Sign in to your account
             </h2>
@@ -39,7 +97,15 @@ export default function Login() {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      setEmailError(null);
+                    }}
                   />
+
+                  {emailError && (
+                    <p className="text-red-500 text-sm mt-2">{emailError}</p>
+                  )}
                 </div>
               </div>
 
@@ -68,7 +134,13 @@ export default function Login() {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+                  )}
                 </div>
               </div>
 
