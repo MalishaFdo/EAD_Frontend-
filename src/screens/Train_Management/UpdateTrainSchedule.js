@@ -7,6 +7,7 @@ import { getByIdTrainSchedules, updateByIdTrainSchedules } from "../../shared/ap
 export default function UpdateTrainSchedule() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [ID, setId] = useState("")
   const [formData, setFormData] = useState({
     departure: "",
     destination: "",
@@ -14,21 +15,17 @@ export default function UpdateTrainSchedule() {
     startTime: "",
     endTime: "",
   });
-  const [ID, setId] = useState("")
 
   const fetchData = async (id) => {
     try {
-      const response = await axios.get(getByIdTrainSchedules(id));
-      const { data } = response.data;
+      await axios.get(getByIdTrainSchedules(id)).then(result => {
+        console.log(result);
+        if (!result.data) {
+          throw new Error("Data is undefined");
+        }
+        setFormData(result.data);
+      }).catch(err => console.log(err));
 
-      console.log("DATAAA", data);
-      setFormData({
-        departure: data.departure,
-        destination: data.destination,
-        date: data.scheduleDate,
-        startTime: data.startTime,
-        endTime: data.endTime,
-      });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -52,16 +49,20 @@ export default function UpdateTrainSchedule() {
   }
 
   const updateData = async () => {
-    localStorage.setItem("wwwww", JSON.stringify(ID));
     try {
-      setFormData({
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+
+      const data = {
         departure: formData.departure,
         destination: formData.destination,
         date: formData.scheduleDate,
         startTime: formData.startTime,
         endTime: formData.endTime,
-      });
-      const response = await axios.patch(updateByIdTrainSchedules(ID), formData).then(result => console.log(result)).catch(error => console.log(error));
+      }
+      await axios.put(updateByIdTrainSchedules(ID), data, { headers }).then(result => console.log(result)).catch(error => console.log(error));
+      handleClick();
 
     } catch (error) {
       console.error("Error fetching data:", error);

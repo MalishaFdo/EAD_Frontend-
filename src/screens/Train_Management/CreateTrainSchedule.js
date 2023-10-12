@@ -4,10 +4,10 @@ import NavBar from "../../components/NavBar";
 import axios from "axios";
 import { createTrainScheduleUrlPost, getAllTrains } from "../../shared/apiUrls";
 
-import { useAlert } from "react-alert";
+//import { useAlert } from "react-alert";
 
 export default function CreateTrainSchedule() {
-  const alert = useAlert();
+  //const alert = useAlert();
   const [trains, setTrains] = useState({
     trainName: "",
     trainId: "",
@@ -36,6 +36,18 @@ export default function CreateTrainSchedule() {
   }
 
   const sendData = async () => {
+    if (
+      !formData.departure ||
+      !formData.destination ||
+      !formData.scheduleDate ||
+      !formData.startTime ||
+      !formData.endTime
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
     try {
       const requestData = {
         trainId: trains.trainId,
@@ -53,7 +65,7 @@ export default function CreateTrainSchedule() {
       await axios
         .post(createTrainScheduleUrlPost(), requestData, { headers })
         .then((results) => {
-          alert.success("Train Schedule sucessfully created!");
+          alert("Train Schedule sucessfully created!");
           navigate("/schedule");
         })
         .catch((error) => {
@@ -61,7 +73,7 @@ export default function CreateTrainSchedule() {
           alert.error("Error creating train schedule!");
         });
     } catch (error) {
-      console.error("Error submitting data:", error);
+      alert("Error submitting data:" + error.message);
     }
   };
 
@@ -80,7 +92,7 @@ export default function CreateTrainSchedule() {
         })
         .catch((error) => console.log(error));
     } catch (error) {
-      console.error("Error submitting data:", error);
+      alert("Error submitting data:" + error.message);
     }
   };
 

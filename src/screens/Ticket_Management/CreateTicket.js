@@ -5,41 +5,106 @@ import axios from 'axios';
 import { createReservationUrlPost, getAllTrainSchedules } from "../../shared/apiUrls";
 
 export default function CreateTicket() {
-    const nic = localStorage.getItem("nic");
     const location = useLocation();
-
     const navigate = useNavigate();
-    const [selectedOption, setSelectedOption] = useState('Select');
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        nic: nic,
-        reserveCount: "",
+
+    // State to store train schedule data
+    const [trainScheduleData, setTrainScheduleData] = useState({
+        trainScheduleId: "",
+        destination: "",
+        departure: "",
+        startTime: "",
+        endTime: "",
+        scheduleDate: ""
     });
 
-    function convertDateFormat(inputDate) {
-        const dateObject = new Date(inputDate);
-        return dateObject.toISOString();
-    }
+    const [formData, setFormData] = useState({
+        nic: "",
+        reserveCount: 0,
+    });
+
+    //const [nicError, setNicError] = useState(null);
+
+    // Function to fetch train schedule data based on trainScheduleId
+    // const fetchTrainScheduleData = async (trainScheduleId) => {
+    //     try {
+    //         const response = await axios.get(`${getAllTrainSchedules}/${trainScheduleId}`);
+    //         const data = response.data;
+
+    //         // Update the state with the retrieved data
+    //         setTrainScheduleData({
+    //             trainScheduleId: data.trainScheduleId,
+    //             destination: data.destination,
+    //             departure: data.departure,
+    //             startTime: data.startTime,
+    //             endTime: data.endTime,
+    //         });
+    //     } catch (error) {
+    //         console.error("Error fetching train schedule data:", error);
+    //     }
+    // };
+
+    // Check if trainScheduleId is present in the URL and fetch data
+    useEffect(() => {
+        const urlSearchParams = new URLSearchParams(location.search);
+        const trainScheduleId = urlSearchParams.get("trainScheduleId");
+        const departure = urlSearchParams.get("departure");
+        const destination = urlSearchParams.get("destination");
+        const scheduleDate = urlSearchParams.get("date");
+        const startTime = urlSearchParams.get("startTime");
+        const endTime = urlSearchParams.get("endTime");
+
+        const data = {
+            trainScheduleId,
+            departure,
+            destination,
+            scheduleDate,
+            startTime,
+            endTime
+        }
+        setTrainScheduleData(data);
+
+        if (data.trainScheduleId) {
+            setFormData({ ...formData, trainScheduleId });
+        }
+    }, []);
 
     const sendData = async () => {
+        // if (
+        //     !formData.nic ||
+        //     !formData.reserveCount 
+        //   ) {
+        //     // Check if any required field is empty
+        //     // Display an error message or prevent form submission
+        //     alert("Please fill in all required fields.");
+        //     return;
+        //   }
+      
+        //   if (!validateNIC(formData.nic)) {
+        //     alert("Invalid NIC format. Please enter a valid NIC.");
+        //     return;
+        //   } else {
+        //     setNicError(null);
+        //   }
         try {
             const requestData = {
+                trainScheduleId: trainScheduleData.trainScheduleId,
                 nic: formData.nic,
                 reserveCount: formData.reserveCount,
+                reservationDate: trainScheduleData.scheduleDate
             };
 
             const headers = {
                 "Content-Type": "application/json;charset=UTF-8",
             };
+            await axios.post(createReservationUrlPost(), requestData, { headers }).then(results => {
+                console.log(results.data);
+            }).catch(err => {
+                console.log(err);
+            });
 
-            const response = await axios.post(
-                createReservationUrlPost(),
-                requestData,
-                { headers }
-            );
-            navigate("/schedule");
-        }
-        catch (error) {
+            navigate("/details");
+        } catch (error) {
             console.error("Error submitting data:", error);
         }
     }

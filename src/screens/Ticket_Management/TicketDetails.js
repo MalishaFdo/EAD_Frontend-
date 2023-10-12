@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
 import { getAllReservations } from "../../shared/apiUrls";
-import { Link } from "react-router-dom";
 
 export default function TicketDetails() {
   const navigate = useNavigate();
@@ -13,6 +12,7 @@ export default function TicketDetails() {
     const fetchData = async () => {
       try {
         const response = await axios.get(getAllReservations());
+        const data = response.data.data;
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -22,13 +22,24 @@ export default function TicketDetails() {
     fetchData();
   }, []);
 
-  function handleEditClick(id) {
-    navigate(`/updatereservation/${id}`);
-  }
+  // function handleEditClick(id) {
+  //   navigate(`/updatereservation/${id}`);
+  // }
 
   function removeTimeFromDate(isoString) {
     const datePart = isoString.split('T')[0];
     return datePart.toString();
+  }
+
+  function handleDeleteClick(_id) {
+    // Find the index of the row to delete
+    const dataIndex = data.findIndex(item => item._id === _id);
+    if (dataIndex !== -1) {
+      // Create a new array without the row to delete
+      const newData = [...data];
+      newData.splice(dataIndex, 1);
+      setData(newData);
+    }
   }
 
   return (
@@ -119,24 +130,22 @@ export default function TicketDetails() {
                   >
                     <div className="pl-3">
                       <div className="text-base font-semibold">
-                        {item.departure}
+                        {item.nic}
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">{item.nic}</td>
                   <td className="px-6 py-4">{item.destination}</td>
                   <td className="px-6 py-4">{item.departure}</td>
                   <td className="px-6 py-4">{removeTimeFromDate(item.reservationDate)}</td>
                   <td className="px-6 py-4">{item.reserveCount}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>{" "}
-                      Active
+                      {item.status === 0 ? "Active" : "Deactivate"}
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <Link
-                      to={`/updatereservation/${item._id}`} // Pass the ID as a parameter
+                      to={`/updateTicket/${item._id}`} // Pass the ID as a parameter
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       {/* Edit Icon */}
@@ -162,6 +171,7 @@ export default function TicketDetails() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => handleDeleteClick(item._id)}
                     >
                       {/* Delete Icon */}
                       <svg

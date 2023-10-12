@@ -3,6 +3,11 @@ import React, { useState } from "react";
 import logo from "../images/logo.png"
 
 export default function NavBar() {
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/");
+  }
+
   return (
     <nav class="bg-gray-800">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -89,7 +94,7 @@ export default function NavBar() {
                   Trains
                 </a>
                 <a
-                  href="/train"
+                  href="/trainschedule"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Train Schedule
@@ -99,12 +104,6 @@ export default function NavBar() {
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Book
-                </a>
-                <a
-                  href="/trainschedule"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                >
-                  Train Schedule
                 </a>
               </div>
             </div>
@@ -134,6 +133,7 @@ export default function NavBar() {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={handleClick}
             >
               Sign Out
             </button>

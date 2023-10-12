@@ -6,7 +6,6 @@ import Register from "./screens/Register";
 import Dashboard from './components/Dashboard';
 import Home from "./screens/Home";
 
-
 /* Train_Management */
 import CreateTrain from "./screens/Train_Management/CreateTrain";
 import CreateTrainSchedule from "./screens/Train_Management/CreateTrainSchedule";
@@ -42,13 +41,13 @@ export default function App() {
 
         {/* Ticket_Management */}
         <Route path="/createTicket" element={<CreateTicket />} /> 
-        <Route path="/updateTicket" element={<UpdateTicket />} /> 
+        <Route path="/updateTicket/:id" element={<UpdateTicket />} /> 
         <Route path="/details" element={<TicketDetails />} /> 
         <Route path="/reserve" element={<Reservation />} /> 
 
         {/* Traveler_Management */}
         <Route path="/createTraveler" element={<CreateTraveler />} /> 
-        <Route path="/updateTraveler" element={<UpdateTraveler />} /> 
+        <Route path="/updateTraveler/:id" element={<UpdateTraveler />} /> 
         <Route path="/travelInfo" element={<TravelInfo />} /> 
       </Routes>
     </BrowserRouter>

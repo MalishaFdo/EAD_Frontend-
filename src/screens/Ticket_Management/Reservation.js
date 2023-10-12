@@ -6,6 +6,7 @@ import { getAllTrainSchedules } from "../../shared/apiUrls";
 import { Link } from "react-router-dom";
 
 export default function Reservation() {
+  const [trainScheduleId, setTrainScheduleId] = useState("");
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
@@ -23,7 +24,7 @@ export default function Reservation() {
   }, []);
 
   function handleEditClick(id) {
-    navigate(`/updateschedule/${id}`);
+    navigate(`/updatereservation/${id}`);
   }
 
   function removeTimeFromDate(isoString) {
@@ -100,7 +101,7 @@ export default function Reservation() {
                   Destination
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Seats
+                  Avaliable Seats
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Date
@@ -148,14 +149,14 @@ export default function Reservation() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <a href="/createTicket">
+                    <Link to={`/createTicket?departure=${item.departure}&destination=${item.destination}&availableSeats=${item.availableSeatCount}&date=${removeTimeFromDate(item.scheduleDate)}&startTime=${item.startTime}&endTime=${item.endTime}&trainScheduleId=${item._id}`}>
                       <button
                         type="submit"
                         className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Reserve
                       </button>
-                    </a>
+                    </Link>
                   </td>
                 </tr>
               ))}
