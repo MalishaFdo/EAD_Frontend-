@@ -1,7 +1,71 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
+import axios from 'axios';
+import { getUserById, updateByIdUser } from "../../shared/apiUrls";
 
 export default function UpdateTraveler() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [ID, setId] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    nic: "",
+    status: "",
+    role: ""
+  });
+
+
+  const fetchData = async (id) => {
+    try {
+      await axios.get(getUserById(id)).then(result => {
+        console.log(result);
+        if (!result.data) {
+          throw new Error("Data is undefined");
+        }
+        setFormData(result.data);
+      }).catch(err => console.log(err));
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const id = location.pathname.split("/")[2];
+    setId(id);
+    fetchData(id);
+  }, []);
+
+  function handleClick() {
+    navigate("/travelInfo");
+  }
+
+  const updateData = async () => {
+    try {
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+
+      const data = {
+        nic: formData.nic,
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: 0,
+        status: Number(formData.status)
+      }
+      await axios.put(updateByIdUser(ID), data, { headers }).then(result => console.log(result)).catch(error => console.log(error));
+      handleClick();
+      //}
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <>
       <NavBar /> {/* Include the NavBar component at the top */}
@@ -14,7 +78,7 @@ export default function UpdateTraveler() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6">
               <div>
                 <label
                   htmlFor="nic"
@@ -30,6 +94,9 @@ export default function UpdateTraveler() {
                     autoComplete="nic"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.nic}
+                    readOnly={true}
+                    onChange={(e) => setFormData({ ...formData, nic: e.target.value })}
                   />
                 </div>
               </div>
@@ -49,6 +116,8 @@ export default function UpdateTraveler() {
                     autoComplete="name"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
               </div>
@@ -68,6 +137,8 @@ export default function UpdateTraveler() {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
                 </div>
               </div>
@@ -89,6 +160,8 @@ export default function UpdateTraveler() {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
                 </div>
               </div>
@@ -104,12 +177,14 @@ export default function UpdateTraveler() {
                 </div>
                 <div className="mt-2">
                   <input
-                    id="cpassword"
-                    name="cpassword"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     type="password"
                     autoComplete="confirm-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   />
                 </div>
               </div>
@@ -119,18 +194,20 @@ export default function UpdateTraveler() {
                   <label className="flex items-center space-x-2">
                     <input
                       type="radio"
-                      name="Status"
-                      value="Active"
+                      name="status"
+                      value="0"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     />
                     <span className="text-slate-100">Activate</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
                       type="radio"
-                      name="Status"
-                      value="Deactive"
+                      name="status"
+                      value="1"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     />
                     <span className="text-slate-100">Deactivate</span>
                   </label>
@@ -141,6 +218,7 @@ export default function UpdateTraveler() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={updateData}
                 >
                   Update
                 </button>

@@ -23,8 +23,6 @@ export default function CreateTicket() {
         reserveCount: 0,
     });
 
-    //const [nicError, setNicError] = useState(null);
-
     // Function to fetch train schedule data based on trainScheduleId
     // const fetchTrainScheduleData = async (trainScheduleId) => {
     //     try {
@@ -70,22 +68,6 @@ export default function CreateTicket() {
     }, []);
 
     const sendData = async () => {
-        // if (
-        //     !formData.nic ||
-        //     !formData.reserveCount 
-        //   ) {
-        //     // Check if any required field is empty
-        //     // Display an error message or prevent form submission
-        //     alert("Please fill in all required fields.");
-        //     return;
-        //   }
-      
-        //   if (!validateNIC(formData.nic)) {
-        //     alert("Invalid NIC format. Please enter a valid NIC.");
-        //     return;
-        //   } else {
-        //     setNicError(null);
-        //   }
         try {
             const requestData = {
                 trainScheduleId: trainScheduleData.trainScheduleId,
