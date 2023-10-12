@@ -23,9 +23,6 @@ export default function CreateTraveler() {
         password: formData.password,
       };
 
-
-
-
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
 

@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
 import { getAllTrainSchedules } from "../../shared/apiUrls";
-import { Link } from "react-router-dom";
 
 export default function ExistingTrainSchedule() {
   const navigate = useNavigate();
@@ -13,6 +12,8 @@ export default function ExistingTrainSchedule() {
     const fetchData = async () => {
       try {
         const response = await axios.get(getAllTrainSchedules());
+        const data = response.data.data;
+        // await filterUser(data);
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -144,8 +145,7 @@ export default function ExistingTrainSchedule() {
                   <td className="px-6 py-4">{item.endTime}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>{" "}
-                      Active
+                      {item.status === 0 ? "Active" : "Deactivate"}
                     </div>
                   </td>
                   <td className="px-6 py-4">
