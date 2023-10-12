@@ -20,6 +20,10 @@ export const getUserById = (id) => createUrl(`api/User/get/${id}`);
 export const updateByIdUser = (id) => createUrl(`api/User/updateuser/${id}`);
 export const deleteUsers = (id) => createUrl(`api/User/delete/${id}`);
 
+//Define the endpoint for login and registration 
+export const createLoginUrl = () => createUrl("api/Login");
+export const createLoginUrlPost = () => createUrl("api/Login");
+
 // Define the endpoint for creating a Resrvattions
 export const createResrvationUrl = () => createUrl("api/Reservation/create");
 export const createReservationUrlPost = () => createUrl("api/Reservation/create");

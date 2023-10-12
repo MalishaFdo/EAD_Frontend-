@@ -17,6 +17,16 @@ export default function CreateTrain() {
 
 
   const fetchData = async () => {
+    if (
+      !formData.trainName ||
+      !formData.seatCount 
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     try {
       if (formData.trainName && formData.seatCount) {
         const requestData = {
@@ -40,7 +50,7 @@ export default function CreateTrain() {
         //navigate("/trainschedule");
       }
     } catch (error) {
-      console.error("Error submitting data:", error);
+      alert("Error submitting data:" + error.message);
     }
   };
 

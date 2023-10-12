@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
+import axios from "axios";
 import { createUserUrlPost } from "../../shared/apiUrls";
 
 export default function CreateTraveler() {
@@ -14,7 +14,49 @@ export default function CreateTraveler() {
     confirmPassword: "",
   });
 
+  const [nicError, setNicError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+
   const sendData = async () => {
+    if (
+      !formData.nic ||
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (!validateNIC(formData.nic)) {
+      alert("Invalid NIC format. Please enter a valid NIC.");
+      return;
+    } else {
+      setNicError(null);
+    }
+
+    if (!validateEmail(formData.email)) {
+      alert("Invalid email address. Please enter a valid email.");
+      return;
+    } else {
+      setEmailError(null);
+    }
+
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    } else {
+      setPasswordError(null);
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
     try {
       const requestData = {
         nic: formData.nic,
@@ -25,26 +67,31 @@ export default function CreateTraveler() {
 
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
-
       };
 
       await passwordMatch(formData.password, formData.confirmPassword);
 
-      await axios.post(
-        createUserUrlPost(),
-        requestData,
-        { headers }
-      );
+      await axios.post(createUserUrlPost(), requestData, { headers });
+      alert("Data inserted successfully!");
       navigate("/schedule");
-    }
-    catch (error) {
-      console.error("Error submitting data:", error);
+    } catch (error) {
+      alert("Error submitting data:" + error.message);
     }
 
     async function passwordMatch(password, confirmPassword) {
       if (confirmPassword == password) {
         return;
       }
+    }
+
+    function validateNIC(nic) {
+      const nicRegex = /^[0-9]{9}[vV]$/;
+      return nicRegex.test(nic);
+    }
+
+    function validateEmail(email) {
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      return emailRegex.test(email);
     }
   };
 
@@ -66,7 +113,7 @@ export default function CreateTraveler() {
                   htmlFor="nic"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  NIC
+                  National ID
                 </label>
                 <div className="mt-2">
                   <input
@@ -76,8 +123,14 @@ export default function CreateTraveler() {
                     autoComplete="nic"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, nic: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, nic: e.target.value });
+                      setNicError(null);
+                    }}
                   />
+                  {nicError && (
+                    <p className="text-red-500 text-sm mt-2">{nicError}</p>
+                  )}
                 </div>
               </div>
 
@@ -86,7 +139,7 @@ export default function CreateTraveler() {
                   htmlFor="name"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  Name
+                  Traveler Name
                 </label>
                 <div className="mt-2">
                   <input
@@ -96,7 +149,9 @@ export default function CreateTraveler() {
                     autoComplete="name"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -116,8 +171,15 @@ export default function CreateTraveler() {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      setEmailError(null);
+                    }}
                   />
+
+                  {emailError && (
+                    <p className="text-red-500 text-sm mt-2">{emailError}</p>
+                  )}
                 </div>
               </div>
 
@@ -138,8 +200,13 @@ export default function CreateTraveler() {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
+                  {passwordError && (
+                    <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+                  )}
                 </div>
               </div>
 
@@ -160,7 +227,12 @@ export default function CreateTraveler() {
                     autoComplete="confirm-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>

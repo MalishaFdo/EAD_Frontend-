@@ -94,7 +94,7 @@ export default function NavBar() {
                   Trains
                 </a>
                 <a
-                  href="/train"
+                  href="/trainschedule"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Train Schedule
@@ -104,12 +104,6 @@ export default function NavBar() {
                   class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
                   Book
-                </a>
-                <a
-                  href="/trainschedule"
-                  class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                >
-                  Train Schedule
                 </a>
               </div>
             </div>

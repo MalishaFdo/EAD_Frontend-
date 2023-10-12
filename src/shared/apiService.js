@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createTrainUrlPost, createTrainScheduleUrlPost, createReservationUrlPost, createUserUrlPost } from '../shared/apiUrls'; // Import the createTrainUrl function
+import { createTrainUrlPost, createTrainScheduleUrlPost, createReservationUrlPost, createUserUrlPost, createLoginUrlPost } from '../shared/apiUrls'; // Import the createTrainUrl function
 
 const useApiResult = (request) => {
   const [results, setResults] = useState(null);
@@ -113,4 +113,26 @@ const createTicket = async (data) => {
   }
 };
 
-export { useApiResult, createTrain, createTrainSchedule }; // Export the createTrain function
+// Login
+const Login = async (data) => {
+  try {
+    const response = await fetch(createLoginUrlPost(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      throw new Error('Error creating train: ' + (await response.text()));
+    }
+  } catch (error) {
+    throw new Error('Error creating train: ' + error.message);
+  }
+};
+
+export { useApiResult, createTrain, createTrainSchedule, createLoginUrlPost }; // Export the createTrain function
