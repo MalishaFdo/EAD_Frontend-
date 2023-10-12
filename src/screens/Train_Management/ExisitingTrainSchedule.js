@@ -28,13 +28,13 @@ export default function ExistingTrainSchedule() {
   }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split('T')[0];
+    const datePart = isoString.split("T")[0];
     return datePart.toString();
   }
 
   function handleDeleteClick(_id) {
     // Find the index of the row to delete
-    const dataIndex = data.findIndex(item => item._id === _id);
+    const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
       const newData = [...data];
@@ -140,7 +140,9 @@ export default function ExistingTrainSchedule() {
                   </td>
                   <td className="px-6 py-4">{item.destination}</td>
                   <td className="px-6 py-4">{item.availableSeatCount}</td>
-                  <td className="px-6 py-4">{removeTimeFromDate(item.scheduleDate)}</td>
+                  <td className="px-6 py-4">
+                    {removeTimeFromDate(item.scheduleDate)}
+                  </td>
                   <td className="px-6 py-4">{item.startTime}</td>
                   <td className="px-6 py-4">{item.endTime}</td>
                   <td className="px-6 py-4">

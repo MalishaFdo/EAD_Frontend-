@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react';
-import { createTrainUrlPost, createTrainScheduleUrlPost, createReservationUrlPost, createUserUrlPost, createLoginUrlPost } from '../shared/apiUrls'; // Import the createTrainUrl function
+import { useEffect, useState } from "react";
+import {
+  createTrainUrlPost,
+  createTrainScheduleUrlPost,
+  createReservationUrlPost,
+  createUserUrlPost,
+  createLoginUrlPost,
+} from "../shared/apiUrls"; // Import the createTrainUrl function
 
 const useApiResult = (request) => {
   const [results, setResults] = useState(null);
@@ -27,9 +33,9 @@ const useApiResult = (request) => {
 const createTrain = async (data) => {
   try {
     const response = await fetch(createTrainUrlPost(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -38,21 +44,20 @@ const createTrain = async (data) => {
       const result = await response.json();
       return result;
     } else {
-      throw new Error('Error creating train: ' + (await response.text()));
+      throw new Error("Error creating train: " + (await response.text()));
     }
   } catch (error) {
-    throw new Error('Error creating train: ' + error.message);
+    throw new Error("Error creating train: " + error.message);
   }
 };
-
 
 // Update the createTrainSchedule function to use createTrainScheduleUrlPost for POST requests
 const createTrainSchedule = async (data) => {
   try {
     const response = await fetch(createTrainScheduleUrlPost(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -61,10 +66,10 @@ const createTrainSchedule = async (data) => {
       const result = await response.json();
       return result;
     } else {
-      throw new Error('Error creating train: ' + (await response.text()));
+      throw new Error("Error creating train: " + (await response.text()));
     }
   } catch (error) {
-    throw new Error('Error creating train: ' + error.message);
+    throw new Error("Error creating train: " + error.message);
   }
 };
 
@@ -73,9 +78,9 @@ const CreateTraveler = async (data) => {
   try {
     console.log(data);
     const response = await fetch(createUserUrlPost(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -84,10 +89,10 @@ const CreateTraveler = async (data) => {
       const result = await response.json();
       return result;
     } else {
-      throw new Error('Error creating train: ' + (await response.text()));
+      throw new Error("Error creating train: " + (await response.text()));
     }
   } catch (error) {
-    throw new Error('Error creating train: ' + error.message);
+    throw new Error("Error creating train: " + error.message);
   }
 };
 
@@ -95,9 +100,9 @@ const CreateTraveler = async (data) => {
 const createTicket = async (data) => {
   try {
     const response = await fetch(createReservationUrlPost(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -106,10 +111,10 @@ const createTicket = async (data) => {
       const result = await response.json();
       return result;
     } else {
-      throw new Error('Error creating train: ' + (await response.text()));
+      throw new Error("Error creating train: " + (await response.text()));
     }
   } catch (error) {
-    throw new Error('Error creating train: ' + error.message);
+    throw new Error("Error creating train: " + error.message);
   }
 };
 
@@ -117,9 +122,9 @@ const createTicket = async (data) => {
 const Login = async (data) => {
   try {
     const response = await fetch(createLoginUrlPost(), {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -128,10 +133,10 @@ const Login = async (data) => {
       const result = await response.json();
       return result;
     } else {
-      throw new Error('Error creating train: ' + (await response.text()));
+      throw new Error("Error creating train: " + (await response.text()));
     }
   } catch (error) {
-    throw new Error('Error creating train: ' + error.message);
+    throw new Error("Error creating train: " + error.message);
   }
 };
 

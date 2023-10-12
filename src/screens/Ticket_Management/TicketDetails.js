@@ -27,13 +27,13 @@ export default function TicketDetails() {
   // }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split('T')[0];
+    const datePart = isoString.split("T")[0];
     return datePart.toString();
   }
 
   function handleDeleteClick(_id) {
     // Find the index of the row to delete
-    const dataIndex = data.findIndex(item => item._id === _id);
+    const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
       const newData = [...data];
@@ -129,14 +129,14 @@ export default function TicketDetails() {
                     className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     <div className="pl-3">
-                      <div className="text-base font-semibold">
-                        {item.nic}
-                      </div>
+                      <div className="text-base font-semibold">{item.nic}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">{item.destination}</td>
                   <td className="px-6 py-4">{item.departure}</td>
-                  <td className="px-6 py-4">{removeTimeFromDate(item.reservationDate)}</td>
+                  <td className="px-6 py-4">
+                    {removeTimeFromDate(item.reservationDate)}
+                  </td>
                   <td className="px-6 py-4">{item.reserveCount}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">

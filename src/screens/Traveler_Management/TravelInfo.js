@@ -24,7 +24,7 @@ export default function TravelInfo() {
   }, []);
 
   async function filterUser(data) {
-    return Object.values(data).filter(d => d.role == 0)
+    return Object.values(data).filter((d) => d.role == 0);
   }
 
   // function handleEditClick() {
@@ -37,7 +37,7 @@ export default function TravelInfo() {
 
   function handleDeleteClick(_id) {
     // Find the index of the row to delete
-    const dataIndex = data.findIndex(item => item._id === _id);
+    const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
       const newData = [...data];
@@ -127,9 +127,7 @@ export default function TravelInfo() {
                     className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     <div className="pl-3">
-                      <div className="text-base font-semibold">
-                        {item.nic}
-                      </div>
+                      <div className="text-base font-semibold">{item.nic}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">{item.name}</td>

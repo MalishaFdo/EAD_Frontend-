@@ -1,7 +1,7 @@
 import { json, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
+import axios from "axios";
 import { createTrainUrlPost } from "../../shared/apiUrls";
 
 export default function CreateTrain() {
@@ -15,12 +15,8 @@ export default function CreateTrain() {
   //   fetchData();
   // }, []);
 
-
   const fetchData = async () => {
-    if (
-      !formData.trainName ||
-      !formData.seatCount 
-    ) {
+    if (!formData.trainName || !formData.seatCount) {
       // Check if any required field is empty
       // Display an error message or prevent form submission
       alert("Please fill in all required fields.");
@@ -38,11 +34,9 @@ export default function CreateTrain() {
           "Content-Type": "application/json;charset=UTF-8",
         };
 
-        const response = await axios.post(
-          createTrainUrlPost(),
-          requestData,
-          { headers }
-        );
+        const response = await axios.post(createTrainUrlPost(), requestData, {
+          headers,
+        });
 
         const createdTrain = response.data.data._id;
         localStorage.setItem("trainId", createdTrain);
@@ -54,12 +48,11 @@ export default function CreateTrain() {
     }
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-  if (formData.seatCount.length < 1) {
-    return;
-  }
+    if (formData.seatCount.length < 1) {
+      return;
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -92,7 +85,9 @@ export default function CreateTrain() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.trainName}
-                    onChange={(e) => setFormData({ ...formData, trainName: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, trainName: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -115,16 +110,18 @@ export default function CreateTrain() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.seatCount}
-                    onChange={(e) => setFormData({ ...formData, seatCount: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, seatCount: e.target.value })
+                    }
                   />
                 </div>
               </div>
               <div>
-
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={fetchData}>
+                  onClick={fetchData}
+                >
                   Sumbit
                 </button>
               </div>
