@@ -2,41 +2,46 @@ import { useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
-import { getByIdReservations, updateByIdReservations } from "../../shared/apiUrls";
+import axios from "axios";
+import {
+  getByIdReservations,
+  updateByIdReservations,
+} from "../../shared/apiUrls";
 
 export default function UpdateTicket() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [ID, setId] = useState("")
+  const [ID, setId] = useState("");
   const [formData, setFormData] = useState({
     nic: "",
     // departure: "",
     // destination: "",
     reservationDate: "",
     reserveCount: "",
-    status: ""
+    status: "",
   });
 
   const fetchData = async (id) => {
     try {
-      await axios.get(getByIdReservations(id)).then(result => {
-        console.log(result);
-        if (!result.data) {
-          throw new Error("Data is undefined");
-        }
-        setFormData(result.data);
-      }).catch(err => console.log(err));
-
+      await axios
+        .get(getByIdReservations(id))
+        .then((result) => {
+          console.log(result);
+          if (!result.data) {
+            throw new Error("Data is undefined");
+          }
+          setFormData(result.data);
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alert("Error fetching data:" + error.message);
     }
   };
 
   useEffect(() => {
     const id = location.pathname.split("/")[2];
     setId(id);
-      fetchData(id);
+    fetchData(id);
   }, []);
 
   function handleClick() {
@@ -44,11 +49,22 @@ export default function UpdateTicket() {
   }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split('T')[0];
+    const datePart = isoString.split("T")[0];
     return datePart.toString();
   }
 
   const updateData = async () => {
+    if (
+      !formData.reservationDate ||
+      !formData.reserveCount ||
+      !formData.status
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     try {
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
@@ -60,13 +76,15 @@ export default function UpdateTicket() {
         // destination: formData.destination,
         reservationDate: formData.reservationDate,
         reserveCount: formData.reserveCount,
-        status: Number(formData.status)
-      }
-      await axios.put(updateByIdReservations(ID), data, { headers }).then(result => console.log(result)).catch(error => console.log(error));
+        status: Number(formData.status),
+      };
+      await axios
+        .put(updateByIdReservations(ID), data, { headers })
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
       handleClick();
-
     } catch (error) {
-      console.error("Error fetching data:", error);
+      alert("Error fetching data:" + error.message);
     }
   };
 
@@ -100,7 +118,9 @@ export default function UpdateTicket() {
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.nic}
                     readOnly={true}
-                    onChange={(e) => setFormData({ ...formData, nic: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, nic: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -162,7 +182,12 @@ export default function UpdateTicket() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.reservationDate}
-                    onChange={(e) => setFormData({ ...formData, reservationDate: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        reservationDate: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -184,7 +209,9 @@ export default function UpdateTicket() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.seatCount}
-                    onChange={(e) => setFormData({ ...formData, seatCount: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, seatCount: e.target.value })
+                    }
                   />
                 </div>
               </div>

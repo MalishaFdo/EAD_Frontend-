@@ -170,7 +170,7 @@ export default function Register() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  Email address
+                  Email Address
                 </label>
                 <div className="mt-2">
                   <input

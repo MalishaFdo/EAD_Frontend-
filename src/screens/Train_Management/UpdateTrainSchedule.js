@@ -1,13 +1,16 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
-import { getByIdTrainSchedules, updateByIdTrainSchedules } from "../../shared/apiUrls";
+import axios from "axios";
+import {
+  getByIdTrainSchedules,
+  updateByIdTrainSchedules,
+} from "../../shared/apiUrls";
 
 export default function UpdateTrainSchedule() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [ID, setId] = useState("")
+  const [ID, setId] = useState("");
   const [formData, setFormData] = useState({
     departure: "",
     destination: "",
@@ -18,14 +21,16 @@ export default function UpdateTrainSchedule() {
 
   const fetchData = async (id) => {
     try {
-      await axios.get(getByIdTrainSchedules(id)).then(result => {
-        console.log(result);
-        if (!result.data) {
-          throw new Error("Data is undefined");
-        }
-        setFormData(result.data);
-      }).catch(err => console.log(err));
-
+      await axios
+        .get(getByIdTrainSchedules(id))
+        .then((result) => {
+          console.log(result);
+          if (!result.data) {
+            throw new Error("Data is undefined");
+          }
+          setFormData(result.data);
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -44,7 +49,7 @@ export default function UpdateTrainSchedule() {
   }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split('T')[0];
+    const datePart = isoString.split("T")[0];
     return datePart.toString();
   }
 
@@ -60,10 +65,12 @@ export default function UpdateTrainSchedule() {
         date: formData.scheduleDate,
         startTime: formData.startTime,
         endTime: formData.endTime,
-      }
-      await axios.put(updateByIdTrainSchedules(ID), data, { headers }).then(result => console.log(result)).catch(error => console.log(error));
+      };
+      await axios
+        .put(updateByIdTrainSchedules(ID), data, { headers })
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
       handleClick();
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -98,7 +105,9 @@ export default function UpdateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.departure}
-                    onChange={(e) => setFormData({ ...formData, departure: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, departure: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -121,7 +130,9 @@ export default function UpdateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.destination}
-                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, destination: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -143,7 +154,9 @@ export default function UpdateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={removeTimeFromDate(formData.date)}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, date: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -166,7 +179,9 @@ export default function UpdateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.startTime}
-                    onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, startTime: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -189,7 +204,9 @@ export default function UpdateTrainSchedule() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.endTime}
-                    onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, endTime: e.target.value })
+                    }
                   />
                 </div>
               </div>
