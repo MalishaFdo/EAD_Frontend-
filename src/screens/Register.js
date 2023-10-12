@@ -28,33 +28,33 @@ export default function Register() {
     ) {
       // Check if any required field is empty
       // Display an error message or prevent form submission
-      console.error("Please fill in all required fields.");
+      alert("Please fill in all required fields.");
       return;
     }
 
     if (!validateNIC(formData.nic)) {
-      setNicError("Invalid NIC format. Please enter a valid NIC.");
+      alert("Invalid NIC format. Please enter a valid NIC.");
       return;
     } else {
       setNicError(null);
     }
 
     if (!validateEmail(formData.email)) {
-      setEmailError("Invalid email address. Please enter a valid email.");
+      alert("Invalid email address. Please enter a valid email.");
       return;
     } else {
       setEmailError(null);
     }
 
     if (formData.password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
+      alert("Password must be at least 8 characters long.");
       return;
     } else {
       setPasswordError(null);
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setPasswordError("Passwords do not match.");
+      alert("Passwords do not match.");
       return;
     }
     try {
@@ -78,12 +78,13 @@ export default function Register() {
         { headers },
         (response) => {
           // Success callback function
-          console.log("Data inserted successfully!");
+          alert("Data inserted successfully!");
+          //console.log("Data inserted successfully!");
           navigate("/");
         }
       );
     } catch (error) {
-      console.error("Error submitting data:", error);
+      alert("Error submitting data:" + error.message);
     }
 
     async function passwordMatch(password, confirmPassword) {

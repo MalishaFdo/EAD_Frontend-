@@ -1,23 +1,34 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
-import axios from 'axios';
-import { createTrainScheduleUrlPost } from "../../shared/apiUrls";
+import axios from "axios";
+import { createTrainScheduleUrlPost, getAllTrains } from "../../shared/apiUrls";
 
+import { useAlert } from "react-alert";
 
 export default function CreateTrainSchedule() {
-  const trainId = localStorage.getItem("trainId");
-  const location = useLocation();
+  const alert = useAlert();
+  const [trains, setTrains] = useState({
+    trainName: "",
+    trainId: "",
+  });
+
+  const [trainData, setTrainData] = useState([]);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    trainId: trainId,
+    trainId: trains.trainId,
     departure: "",
     destination: "",
     scheduleDate: "",
     startTime: "",
     endTime: "",
+    trainName: "",
   });
+
+  useEffect(() => {
+    loadTrains();
+  }, []);
 
   function convertDateFormat(inputDate) {
     const dateObject = new Date(inputDate);
@@ -27,29 +38,86 @@ export default function CreateTrainSchedule() {
   const sendData = async () => {
     try {
       const requestData = {
-        trainId: formData.trainId,
+        trainId: trains.trainId,
         departure: formData.departure,
         destination: formData.destination,
         scheduleDate: formData.scheduleDate,
         startTime: formData.startTime,
         endTime: formData.endTime,
-
       };
 
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
-
       };
 
-      const response = await axios.post(
-        createTrainScheduleUrlPost(),
-        requestData,
-        { headers }
-      );
-      navigate("/schedule");
-    }
-    catch (error) {
+      await axios
+        .post(createTrainScheduleUrlPost(), requestData, { headers })
+        .then((results) => {
+          alert.success("Train Schedule sucessfully created!");
+          navigate("/schedule");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert.error("Error creating train schedule!");
+        });
+    } catch (error) {
       console.error("Error submitting data:", error);
+    }
+  };
+
+  const loadTrains = async () => {
+    try {
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+      };
+
+      await axios
+        .get(getAllTrains(), { headers })
+        .then((results) => {
+          const data = results.data.data;
+          setTrainData(data);
+          setTrains({ ...trains, trainId: data._id, trainName: data.name });
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
+  // const handleSelectChange = (e) => {
+  //   const selectedTrainName = e.target.value;
+  //   const selectedTrain = trainData.find(
+  //     (train) => train.trainName === selectedTrainName
+  //   );
+
+  //   if (selectedTrain) {
+  //     setFormData({ ...formData, trainName: selectedTrainName });
+  //   } else {
+  //     setFormData({ ...formData, trainName: "" });
+  //   }
+  // };
+
+  const handleSelectChange = (e) => {
+    const selectedTrainName = e.target.value;
+    const selectedTrain = trainData.find(
+      (train) => train.trainName === selectedTrainName
+    );
+
+    if (selectedTrain) {
+      setFormData({ ...formData, trainName: selectedTrainName });
+      // Update the train state with the selected train's trainId
+      setTrains({
+        ...trains,
+        trainId: selectedTrain._id,
+        trainName: selectedTrainName,
+      });
+    } else {
+      setFormData({ ...formData, trainName: "" });
+      // If no matching train is found, you may want to reset the train state as well
+      setTrains({
+        trainId: "", // Set it to an appropriate default value
+        trainName: "",
+      });
     }
   };
 
@@ -65,7 +133,31 @@ export default function CreateTrainSchedule() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6"  >
+            <form className="space-y-6">
+              <div>
+                <label
+                  htmlFor="train"
+                  className="block text-sm font-medium leading-6 text-slate-100"
+                >
+                  Select a train
+                </label>
+                <div className="mt-2">
+                  <select
+                    id="train"
+                    name="train"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={handleSelectChange}
+                    value={formData.trainName} // Set the selected value based on formData
+                  >
+                    {trainData.map((train) => (
+                      <option key={train._id} value={train.trainName}>
+                        {train.trainName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <div>
                 <label
                   htmlFor="departure"
@@ -81,7 +173,9 @@ export default function CreateTrainSchedule() {
                     autoComplete="departure"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, departure: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, departure: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -103,7 +197,9 @@ export default function CreateTrainSchedule() {
                     autoComplete="destination"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, destination: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -124,7 +220,12 @@ export default function CreateTrainSchedule() {
                     autoComplete="date"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, scheduleDate: convertDateFormat(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        scheduleDate: convertDateFormat(e.target.value),
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -145,7 +246,9 @@ export default function CreateTrainSchedule() {
                     autoComplete="startTime"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, startTime: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -166,7 +269,9 @@ export default function CreateTrainSchedule() {
                     autoComplete="endTime"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, endTime: e.target.value })
+                    }
                   />
                 </div>
               </div>
