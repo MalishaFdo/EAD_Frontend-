@@ -2,7 +2,10 @@ import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
-import { getAllReservations } from "../../shared/apiUrls";
+import {
+  getAllReservations,
+  deleteByIdReservations,
+} from "../../shared/apiUrls";
 
 export default function TicketDetails() {
   const navigate = useNavigate();
@@ -31,8 +34,9 @@ export default function TicketDetails() {
     return datePart.toString();
   }
 
-  function handleDeleteClick(_id) {
+  async function handleDeleteClick(_id) {
     // Find the index of the row to delete
+    await axios.delete(deleteByIdReservations(_id));
     const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
