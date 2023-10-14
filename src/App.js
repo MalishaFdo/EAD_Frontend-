@@ -11,6 +11,7 @@ import CreateTrain from "./screens/Train_Management/CreateTrain";
 import CreateTrainSchedule from "./screens/Train_Management/CreateTrainSchedule";
 import UpdateTrainSchedule from "./screens/Train_Management/UpdateTrainSchedule";
 import ExisitingTrainSchedule from "./screens/Train_Management/ExisitingTrainSchedule";
+import AllTrains from "./screens/Train_Management/AllTrains";
  
 /* Ticket_Management */
 import CreateTicket from './screens/Ticket_Management/CreateTicket';
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/trainschedule" element={<CreateTrainSchedule />} />
         <Route path="/updateschedule/:id" element={<UpdateTrainSchedule />} />
         <Route path="/schedule" element={<ExisitingTrainSchedule />} />
+        <Route path="/alltrains" element={<AllTrains />} />
 
         {/* Ticket_Management */}
         <Route path="/createTicket" element={<CreateTicket />} /> 

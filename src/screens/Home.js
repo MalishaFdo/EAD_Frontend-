@@ -61,6 +61,12 @@ export default function Home() {
                 Reservation Details <span aria-hidden="true">&rarr;</span>
               </a>
               <a
+                href="/alltrains"
+                class="bg-indigo-600 text-white rounded-md px-3 py-2 text-sm font-medium"
+              >
+                Train Details <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a
                 href="/schedule"
                 class="bg-indigo-600 text-white rounded-md px-3 py-2 text-sm font-medium"
               >
