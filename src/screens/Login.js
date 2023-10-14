@@ -6,9 +6,6 @@ import { createLoginUrlPost } from "../shared/apiUrls";
 
 export default function Login() {
   const navigate = useNavigate();
-  // function handleClick() {
-  //   navigate("/home");
-  // }
 
   const [formData, setFormData] = useState({
     email: "",
@@ -18,55 +15,69 @@ export default function Login() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const handleClick = async () => {
-    if (!formData.email || !formData.password) {
-      // Check if any required field is empty
-      // Display an error message or prevent form submission
-      alert("Please fill in all required fields.");
-      return;
+  const handleClick = () => {
+    if (validateForm()) {
+      // Only proceed if the form is valid
+      // **Modified:**
+      // Use async/await to handle the POST request
+      handleLogin();
     }
+  };
+
+  const handleLogin = async () => {
+    const requestData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    const headers = {
+      "Content-Type": "application/json;charset=UTF-8",
+    };
+
+    try {
+      const response = await axios.post(createLoginUrlPost(), requestData, {
+        headers,
+      });
+
+      // Handle success
+      if (response.status === 200) {
+        alert("Login successful!");
+        navigate("/home");
+      }
+    } catch (error) {
+      // Handle errors
+      alert("Error submitting data: " + error.message);
+    }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!formData.email || !formData.password) {
+      alert("Please fill in all required fields.");
+      isValid = false;
+    }
+
     if (!validateEmail(formData.email)) {
       alert("Invalid email address. Please enter a valid email.");
-      return;
+      isValid = false;
     } else {
       setEmailError(null);
     }
 
     if (formData.password.length < 8) {
       alert("Password must be at least 8 characters long.");
-      return;
+      isValid = false;
     } else {
       setPasswordError(null);
     }
-    try {
-      const requestData = {
-        email: formData.email,
-        password: formData.password,
-      };
 
-      const headers = {
-        "Content-Type": "application/json;charset=UTF-8",
-      };
+    return isValid;
+  };
 
-      await axios.post(
-        createLoginUrlPost(),
-        requestData,
-        { headers },
-        (response) => {
-          // Success callback function
-          alert("Data inserted successfully!");
-          //console.log("Data inserted successfully!");
-          navigate("/home");
-        }
-      );
-    } catch (error) {
-      alert("Error submitting data:" + error.message);
-    }
-
-    function validateEmail(email) {
-      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      return emailRegex.test(email);
-    }
+  const validateEmail = (email) => {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email);
   };
 
   return (
@@ -97,12 +108,9 @@ export default function Login() {
                     autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => {
-                      setFormData({ ...formData, email: e.target.value });
-                      setEmailError(null);
-                    }}
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
-
                   {emailError && (
                     <p className="text-red-500 text-sm mt-2">{emailError}</p>
                   )}
@@ -134,9 +142,8 @@ export default function Login() {
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
+                    value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   />
                   {passwordError && (
                     <p className="text-red-500 text-sm mt-2">{passwordError}</p>
@@ -148,7 +155,7 @@ export default function Login() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  onClick={handleClick}
+                  // onClick={handleClick}
                 >
                   Sign in
                 </button>
