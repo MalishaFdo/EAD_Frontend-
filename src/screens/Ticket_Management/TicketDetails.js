@@ -25,10 +25,6 @@ export default function TicketDetails() {
     fetchData();
   }, []);
 
-  // function handleEditClick(id) {
-  //   navigate(`/updatereservation/${id}`);
-  // }
-
   function removeTimeFromDate(isoString) {
     const datePart = isoString.split("T")[0];
     return datePart.toString();
