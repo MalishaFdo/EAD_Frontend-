@@ -14,7 +14,10 @@ export const getAllTrainSchedules = () => createUrl("api/TrainSchedule/getAll");
 export const getByIdTrainSchedules = (id) =>
   createUrl(`api/TrainSchedule/getById/${id}`);
 export const updateByIdTrainSchedules = (id) =>
-  createUrl(`/api/TrainSchedule/update/${id}`);
+  createUrl(`api/TrainSchedule/update/${id}`);
+
+export const deleteByIdTrainSchedules = (id) =>
+  createUrl(`api/TrainSchedule/delete/${id}`);
 
 // Define the endpoint for creating a User
 export const createUserUrl = () => createUrl("api/User");
@@ -36,6 +39,8 @@ export const getAllReservations = () => createUrl("api/Reservation/getAll");
 export const getByIdReservations = (id) =>
   createUrl(`api/Reservation/getById/${id}`);
 export const updateByIdReservations = (id) =>
-  createUrl(`/api/Reservation/update/${id}`);
+  createUrl(`api/Reservation/update/${id}`);
+export const deleteByIdReservations = (id) =>
+  createUrl(`api/Reservation/delete/${id}`);
 
 const createUrl = (path) => `${BASE_URL}${path}`;

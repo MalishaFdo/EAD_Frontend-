@@ -35,8 +35,9 @@ export default function TravelInfo() {
   //   }
   // }
 
-  function handleDeleteClick(_id) {
+  async function handleDeleteClick(nic, _id) {
     // Find the index of the row to delete
+    await axios.delete(deleteUsers(nic));
     const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
@@ -165,7 +166,7 @@ export default function TravelInfo() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => handleDeleteClick(item._id)}
+                      onClick={() => handleDeleteClick(item.nic, item._id)}
                     >
                       {/* Delete Icon */}
                       <svg
