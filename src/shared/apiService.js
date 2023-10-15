@@ -4,7 +4,7 @@ import {
   createTrainScheduleUrlPost,
   createReservationUrlPost,
   createUserUrlPost,
-  createLoginUrlPost,
+  userLoginUrlPost,
 } from "../shared/apiUrls"; // Import the createTrainUrl function
 
 const useApiResult = (request) => {
@@ -121,7 +121,7 @@ const createTicket = async (data) => {
 // Login
 const Login = async (data) => {
   try {
-    const response = await fetch(createLoginUrlPost(), {
+    const response = await fetch(userLoginUrlPost(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -140,4 +140,4 @@ const Login = async (data) => {
   }
 };
 
-export { useApiResult, createTrain, createTrainSchedule, createLoginUrlPost }; // Export the createTrain function
+export { useApiResult, createTrain, createTrainSchedule, Login }; // Export the createTrain function

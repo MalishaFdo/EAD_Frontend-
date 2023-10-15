@@ -29,7 +29,7 @@ export const deleteUsers = (id) => createUrl(`api/User/delete/${id}`);
 
 //Define the endpoint for login and registration
 export const createLoginUrl = () => createUrl("api/Login");
-export const createLoginUrlPost = () => createUrl("api/Login");
+export const userLoginUrlPost = () => createUrl("api/User/login");
 
 // Define the endpoint for creating a Resrvattions
 export const createResrvationUrl = () => createUrl("api/Reservation/create");

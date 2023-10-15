@@ -1,11 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import logo from "../images/logo.png";
 import axios from "axios";
-import { createLoginUrlPost } from "../shared/apiUrls";
+import { userLoginUrlPost } from "../shared/apiUrls";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -15,12 +16,9 @@ export default function Login() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (validateForm()) {
-      // Only proceed if the form is valid
-      // **Modified:**
-      // Use async/await to handle the POST request
-      handleLogin();
+      await handleLogin();
     }
   };
 
@@ -34,20 +32,27 @@ export default function Login() {
       "Content-Type": "application/json;charset=UTF-8",
     };
 
-    try {
-      const response = await axios.post(createLoginUrlPost(), requestData, {
+    await axios
+      .post(userLoginUrlPost(), requestData, {
         headers,
+      })
+      .then((response) => {
+        const email = searchParams.get("email");
+        const password = searchParams.get("password");
+        if (email && password) {
+          searchParams.delete(email);
+          searchParams.delete(password);
+          setSearchParams(searchParams);
+        }
+        if (response.status === 200) {
+          alert("Login successful!");
+          navigate("/home");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error submitting data: " + error.message);
       });
-
-      // Handle success
-      if (response.status === 200) {
-        alert("Login successful!");
-        navigate("/home");
-      }
-    } catch (error) {
-      // Handle errors
-      alert("Error submitting data: " + error.message);
-    }
   };
 
   const validateForm = () => {
@@ -92,7 +97,7 @@ export default function Login() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
@@ -109,7 +114,9 @@ export default function Login() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                   />
                   {emailError && (
                     <p className="text-red-500 text-sm mt-2">{emailError}</p>
@@ -143,7 +150,9 @@ export default function Login() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                   />
                   {passwordError && (
                     <p className="text-red-500 text-sm mt-2">{passwordError}</p>
@@ -155,7 +164,7 @@ export default function Login() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-slate-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  // onClick={handleClick}
+                  onClick={handleClick}
                 >
                   Sign in
                 </button>

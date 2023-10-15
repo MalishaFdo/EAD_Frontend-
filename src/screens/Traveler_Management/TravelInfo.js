@@ -36,6 +36,7 @@ export default function TravelInfo() {
   // }
 
   async function handleDeleteClick(nic, _id) {
+    console.log("******************************", _id);
     // Find the index of the row to delete
     await axios.delete(deleteUsers(nic));
     const dataIndex = data.findIndex((item) => item._id === _id);
@@ -115,7 +116,7 @@ export default function TravelInfo() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {data.map((item, index) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -166,7 +167,7 @@ export default function TravelInfo() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => handleDeleteClick(item.nic, item._id)}
+                      onClick={() => handleDeleteClick(item.nic, index)}
                     >
                       {/* Delete Icon */}
                       <svg
