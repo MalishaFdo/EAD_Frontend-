@@ -18,7 +18,8 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (
       !formData.nic ||
       !formData.name ||
@@ -78,7 +79,7 @@ export default function Register() {
         { headers },
         (response) => {
           // Success callback function
-          alert("Data inserted successfully!");
+          // alert("Data inserted successfully!");
           //console.log("Data inserted successfully!");
           navigate("/");
         }

@@ -17,12 +17,39 @@ export default function Login() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      handleLogin();
-    }
+    // if (validateForm()) {
+    //   handleLogin();
+    // }
+    handleLogin();
+    
   };
 
   const handleLogin = async () => {
+
+    if (
+      !formData.email ||
+      !formData.password 
+    ) {
+      // Check if any required field is empty
+      // Display an error message or prevent form submission
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      alert("Invalid email address. Please enter a valid email.");
+      return;
+    } else {
+      setEmailError(null);
+    }
+
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    } else {
+      setPasswordError(null);
+    }
+
     const requestData = {
       email: formData.email,
       password: formData.password,
@@ -56,30 +83,30 @@ export default function Login() {
       });
   };
 
-  const validateForm = () => {
-    let isValid = true;
+  // const validateForm = () => {
+  //   let isValid = true;
 
-    if (!formData.email || !formData.password) {
-      alert("Please fill in all required fields.");
-      isValid = false;
-    }
+  //   if (!formData.email || !formData.password) {
+  //     alert("Please fill in all required fields.");
+  //     isValid = false;
+  //   }
 
-    if (!validateEmail(formData.email)) {
-      alert("Invalid email address. Please enter a valid email.");
-      isValid = false;
-    } else {
-      setEmailError(null);
-    }
+  //   if (!validateEmail(formData.email)) {
+  //     alert("Invalid email address. Please enter a valid email.");
+  //     isValid = false;
+  //   } else {
+  //     setEmailError(null);
+  //   }
 
-    if (formData.password.length < 8) {
-      alert("Password must be at least 8 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError(null);
-    }
+  //   if (formData.password.length < 8) {
+  //     alert("Password must be at least 8 characters long.");
+  //     isValid = false;
+  //   } else {
+  //     setPasswordError(null);
+  //   }
 
-    return isValid;
-  };
+  //   return isValid;
+  // };
 
   const validateEmail = (email) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
