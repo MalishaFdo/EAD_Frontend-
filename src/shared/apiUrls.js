@@ -33,14 +33,10 @@ export const userLoginUrlPost = () => createUrl("api/User/login");
 
 // Define the endpoint for creating a Resrvattions
 export const createResrvationUrl = () => createUrl("api/Reservation/create");
-export const createReservationUrlPost = () =>
-  createUrl("api/Reservation/create");
+export const createReservationUrlPost = () => createUrl("api/Reservation/create");
 export const getAllReservations = () => createUrl("api/Reservation/getAll");
-export const getByIdReservations = (id) =>
-  createUrl(`api/Reservation/getById/${id}`);
-export const updateByIdReservations = (id) =>
-  createUrl(`api/Reservation/update/${id}`);
-export const deleteByIdReservations = (id) =>
-  createUrl(`api/Reservation/delete/${id}`);
+export const getByIdReservations = (id) => createUrl(`api/Reservation/getById/${id}`);
+export const updateByIdReservations = (id) => createUrl(`api/Reservation/update/${id}`);
+export const deleteByIdReservations = (id) => createUrl(`api/Reservation/delete/${id}`);
 
 const createUrl = (path) => `${BASE_URL}${path}`;
