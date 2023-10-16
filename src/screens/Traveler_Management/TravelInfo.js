@@ -7,6 +7,7 @@ import { getAllUsers, deleteUsers } from "../../shared/apiUrls";
 export default function TravelInfo() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,14 +28,6 @@ export default function TravelInfo() {
     return Object.values(data).filter((d) => d.role == 0);
   }
 
-  // function handleEditClick() {
-  //   if (id) {
-  //     navigate(`/updateTraveler/${id}`);
-  //   } else {
-  //     console.error("Invalid ID:", id);
-  //   }
-  // }
-
   async function handleDeleteClick(nic, _id) {
     console.log("******************************", _id);
     // Find the index of the row to delete
@@ -47,6 +40,13 @@ export default function TravelInfo() {
       setData(newData);
     }
   }
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
   return (
     <>
@@ -85,10 +85,12 @@ export default function TravelInfo() {
               id="table-search-users"
               class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for users"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -116,7 +118,7 @@ export default function TravelInfo() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"

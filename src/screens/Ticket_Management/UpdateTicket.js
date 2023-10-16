@@ -14,8 +14,6 @@ export default function UpdateTicket() {
   const [ID, setId] = useState("");
   const [formData, setFormData] = useState({
     nic: "",
-    // departure: "",
-    // destination: "",
     reservationDate: "",
     reserveCount: "",
     status: "",
@@ -72,8 +70,6 @@ export default function UpdateTicket() {
 
       const data = {
         nic: formData.nic,
-        // departure: formData.departure,
-        // destination: formData.destination,
         reservationDate: formData.reservationDate,
         reserveCount: formData.reserveCount,
         status: Number(formData.status),
@@ -124,48 +120,6 @@ export default function UpdateTicket() {
                   />
                 </div>
               </div>
-              {/* <div>
-                <label
-                  htmlFor="departure"
-                  className="block text-sm font-medium leading-6 text-slate-100"
-                >
-                  Departure Location
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="departure"
-                    name="departure"
-                    type="text"
-                    autoComplete="departure"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={formData.departure}
-                    onChange={(e) => setFormData({ ...formData, departure: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="destination"
-                    className="block text-sm font-medium leading-6 text-slate-100"
-                  >
-                    Destination Location
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="destination"
-                    name="destination"
-                    type="text"
-                    autoComplete="destination"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={formData.destination}
-                    onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                  />
-                </div>
-              </div> */}
               <div>
                 <label
                   htmlFor="date"
@@ -223,6 +177,9 @@ export default function UpdateTicket() {
                       name="Status"
                       value="Active"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
                     />
                     <span className="text-slate-100">Active</span>
                   </label>
@@ -232,6 +189,9 @@ export default function UpdateTicket() {
                       name="Status"
                       value="Archive"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
                     />
                     <span className="text-slate-100">Archive</span>
                   </label>
@@ -241,6 +201,9 @@ export default function UpdateTicket() {
                       name="Status"
                       value="Archive"
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
                     />
                     <span className="text-slate-100">Complete</span>
                   </label>

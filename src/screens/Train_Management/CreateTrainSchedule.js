@@ -89,6 +89,7 @@ export default function CreateTrainSchedule() {
           const data = results.data.data;
           setTrainData(data);
           setTrains({ ...trains, trainId: data._id, trainName: data.name });
+          console.log(trains.trainId);
         })
         .catch((error) => console.log(error));
     } catch (error) {
