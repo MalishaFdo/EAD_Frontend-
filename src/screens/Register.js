@@ -66,6 +66,7 @@ export default function Register() {
         role: formData.role,
         password: formData.password,
       };
+      console.log("**************", requestData);
 
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
@@ -193,50 +194,36 @@ export default function Register() {
                 </div>
               </div>
 
-              <div>
+              <div className="mt-2">
                 <label
-                  htmlFor="role"
+                  htmlFor="email"
                   className="block text-sm font-medium leading-6 text-slate-100"
                 >
-                  User Role
+                  Admin Role
                 </label>
-                <div className="mt-2">
-                  <div className="flex space-x-4">
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        checked={formData.role.includes("Back Officer")}
-                        onChange={(e) => {
-                          const newRole = [...formData.role];
-                          if (!newRole.includes("Back Officer")) {
-                            newRole.push("Back Officer");
-                          } else {
-                            newRole.splice(newRole.indexOf("Back Officer"), 1);
-                          }
-                          setFormData({ ...formData, role: newRole });
-                        }}
-                        className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      />
-                      <span className="text-slate-100">Back Officer</span>
-                    </label>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        checked={formData.role.includes("Travel Agent")}
-                        onChange={(e) => {
-                          const newRole = [...formData.role];
-                          if (!newRole.includes("Travel Agent")) {
-                            newRole.push("Travel Agent");
-                          } else {
-                            newRole.splice(newRole.indexOf("Travel Agent"), 1);
-                          }
-                          setFormData({ ...formData, role: newRole });
-                        }}
-                        className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      />
-                      <span className="text-slate-100">Travel Agent</span>
-                    </label>
-                  </div>
+                <div className="flex justify-center space-x-4">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="Status"
+                      value="Active"
+                      checked={formData.role === 1}
+                      onChange={() => setFormData({ ...formData, role: 1 })}
+                      className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="text-slate-100">Back Officer</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="Status"
+                      value="Archive"
+                      checked={formData.role === 2}
+                      onChange={() => setFormData({ ...formData, role: 2 })}
+                      className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="text-slate-100">Travel Agent</span>
+                  </label>
                 </div>
               </div>
               <div>
