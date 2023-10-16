@@ -4,6 +4,7 @@ export const BASE_URL = "https://localhost:44346/";
 export const createTrainUrl = () => createUrl("api/Train");
 export const createTrainUrlPost = () => createUrl("api/Train"); // Add a new constant for POST
 export const getAllTrains = () => createUrl("api/Train");
+export const deleteTrainById = (id) => createUrl(`api/Train/${id}`);
 
 // Define the endpoint for creating a train schedules
 export const createTrainScheduleUrl = () =>

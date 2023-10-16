@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
-import { getAllTrains } from "../../shared/apiUrls";
+import { getAllTrains, deleteTrainById } from "../../shared/apiUrls";
 
 export default function ExistingTrainSchedule() {
   const navigate = useNavigate();
@@ -28,9 +28,20 @@ export default function ExistingTrainSchedule() {
     setSearchText(event.target.value);
   }
 
-  // Filter data based on the search text
-  const filteredData = data.filter((item) => item.trainName.toLowerCase().includes(searchText.toLowerCase()));
+  async function handleDeleteClick(id) {
+    await axios
+      .delete(deleteTrainById(id))
+      .then((result) => {
+        console.log(result.data);
+        alert("Deleted successfully!");
+      })
+      .catch((err) => console.log(err));
+  }
 
+  // Filter data based on the search text
+  const filteredData = data.filter((item) =>
+    item.trainName.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <>
@@ -118,6 +129,7 @@ export default function ExistingTrainSchedule() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={() => handleDeleteClick(item._id)}
                     >
                       {/* Delete Icon */}
                       <svg
