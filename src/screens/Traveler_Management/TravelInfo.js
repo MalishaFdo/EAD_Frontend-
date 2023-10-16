@@ -13,8 +13,8 @@ export default function TravelInfo() {
       try {
         const response = await axios.get(getAllUsers());
         const data = response.data.data;
-        await filterUser(data);
-        setData(response.data.data);
+        const users = await filterUser(data);
+        setData(users);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -24,7 +24,7 @@ export default function TravelInfo() {
   }, []);
 
   async function filterUser(data) {
-    return Object.values(data).filter((d) => d.role == 0);
+    return Object.values(data).filter((d) => d.role === 0);
   }
 
   // function handleEditClick() {
@@ -36,7 +36,6 @@ export default function TravelInfo() {
   // }
 
   async function handleDeleteClick(nic, _id) {
-    console.log("******************************", _id);
     // Find the index of the row to delete
     await axios.delete(deleteUsers(nic));
     const dataIndex = data.findIndex((item) => item._id === _id);
