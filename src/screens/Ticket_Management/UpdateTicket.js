@@ -64,7 +64,8 @@ export default function UpdateTicket() {
     return `${year}-${month}-${day}`;
   }
 
-  const updateData = async () => {
+  const updateData = async (e) => {
+    e.preventDefault();
     if (
       !formData.reservationDate ||
       !formData.reserveCount ||
@@ -91,6 +92,7 @@ export default function UpdateTicket() {
         .patch(updateByIdReservations(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
+        alert("Data Updated successfully!");
       handleClick();
     } catch (error) {
       alert("Error fetching data:" + error.message);

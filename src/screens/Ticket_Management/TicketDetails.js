@@ -10,6 +10,7 @@ import {
 export default function TicketDetails() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,13 +40,21 @@ export default function TicketDetails() {
     const today = new Date();
     const fiveDaysFromToday = new Date(today);
     fiveDaysFromToday.setDate(today.getDate() + 5);
+
+    today.setHours(0, 0, 0, 0);
+    fiveDaysFromToday.setHours(0, 0, 0, 0);
+
     const reservationDateTime = new Date(reservationDate);
+    reservationDateTime.setHours(0, 0, 0, 0);
+
     return reservationDateTime > fiveDaysFromToday;
   }
 
   async function handleDeleteClick(_id) {
     // Find the index of the row to delete
     await axios.delete(deleteByIdReservations(_id));
+    alert("Deleted successfully!");
+    navigate("/details");
     const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
@@ -54,6 +63,15 @@ export default function TicketDetails() {
       setData(newData);
     }
   }
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) =>
+    item.nic.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <>
@@ -92,10 +110,12 @@ export default function TicketDetails() {
               id="table-search-users"
               class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for reservation"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -129,7 +149,7 @@ export default function TicketDetails() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {filteredData.map((item) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover-bg-gray-600"

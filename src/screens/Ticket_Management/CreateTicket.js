@@ -28,26 +28,6 @@ export default function CreateTicket() {
 
   const [nicError, setNicError] = useState(null);
 
-  // Function to fetch train schedule data based on trainScheduleId
-  // const fetchTrainScheduleData = async (trainScheduleId) => {
-  //     try {
-  //         const response = await axios.get(`${getAllTrainSchedules}/${trainScheduleId}`);
-  //         const data = response.data;
-
-  //         // Update the state with the retrieved data
-  //         setTrainScheduleData({
-  //             trainScheduleId: data.trainScheduleId,
-  //             destination: data.destination,
-  //             departure: data.departure,
-  //             startTime: data.startTime,
-  //             endTime: data.endTime,
-  //         });
-  //     } catch (error) {
-  //         console.error("Error fetching train schedule data:", error);
-  //     }
-  // };
-
-  // Check if trainScheduleId is present in the URL and fetch data
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(location.search);
     const trainScheduleId = urlSearchParams.get("trainScheduleId");
@@ -72,7 +52,8 @@ export default function CreateTicket() {
     }
   }, []);
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (!formData.nic || !formData.reserveCount) {
       // Check if any required field is empty
       // Display an error message or prevent form submission
@@ -86,6 +67,11 @@ export default function CreateTicket() {
     } else {
       setNicError(null);
     }
+
+    // if (formData.reserveCount < 4) { 
+    //   return ; 
+    //   // throw new Error("You can reserve a maximum of 4 seats.");
+    // }
 
     try {
       const requestData = {

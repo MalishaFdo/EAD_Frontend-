@@ -7,6 +7,7 @@ import { getAllUsers, deleteUsers } from "../../shared/apiUrls";
 export default function TravelInfo() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,17 +28,10 @@ export default function TravelInfo() {
     return Object.values(data).filter((d) => d.role === 0);
   }
 
-  // function handleEditClick() {
-  //   if (id) {
-  //     navigate(`/updateTraveler/${id}`);
-  //   } else {
-  //     console.error("Invalid ID:", id);
-  //   }
-  // }
-
   async function handleDeleteClick(nic, _id) {
     // Find the index of the row to delete
     await axios.delete(deleteUsers(nic));
+    alert("Deleted successfully!");
     const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
@@ -46,6 +40,15 @@ export default function TravelInfo() {
       setData(newData);
     }
   }
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) =>
+    item.nic.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <>
@@ -87,7 +90,7 @@ export default function TravelInfo() {
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -115,7 +118,7 @@ export default function TravelInfo() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -166,7 +169,7 @@ export default function TravelInfo() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => handleDeleteClick(item.nic, index)}
+                      onClick={() => handleDeleteClick(item.nic)}
                     >
                       {/* Delete Icon */}
                       <svg

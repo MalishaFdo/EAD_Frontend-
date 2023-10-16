@@ -35,7 +35,8 @@ export default function CreateTrainSchedule() {
     return dateObject.toISOString();
   }
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (
       !formData.departure ||
       !formData.destination ||

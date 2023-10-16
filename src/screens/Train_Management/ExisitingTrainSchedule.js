@@ -10,6 +10,7 @@ import {
 export default function ExistingTrainSchedule() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +39,8 @@ export default function ExistingTrainSchedule() {
   async function handleDeleteClick(_id) {
     // Find the index of the row to delete
     await axios.delete(deleteByIdTrainSchedules(_id));
+    alert("Deleted successfully!");
+    navigate("/schedule");
     const dataIndex = data.findIndex((item) => item._id === _id);
     if (dataIndex !== -1) {
       // Create a new array without the row to delete
@@ -46,6 +49,14 @@ export default function ExistingTrainSchedule() {
       setData(newData);
     }
   }
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) => item.departure.toLowerCase().includes(searchText.toLowerCase()));
+
 
   return (
     <>
@@ -84,10 +95,12 @@ export default function ExistingTrainSchedule() {
               id="table-search-users"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for trains"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -124,7 +137,7 @@ export default function ExistingTrainSchedule() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {filteredData.map((item) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"

@@ -77,12 +77,14 @@ export default function Register() {
       await axios.post(
         createUserUrlPost(),
         requestData,
+        alert("Registered successfully!"),
+        navigate("/"),
         { headers },
         (response) => {
           // Success callback function
           // alert("Data inserted successfully!");
           //console.log("Data inserted successfully!");
-          navigate("/");
+          
         }
       );
     } catch (error) {

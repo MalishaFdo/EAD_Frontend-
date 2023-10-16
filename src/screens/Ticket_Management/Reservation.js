@@ -10,21 +10,6 @@ export default function Reservation() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(getAllTrainSchedules());
-  //       const data = response.data.data;
-  //       console.log("RESPONSE ******", data);
-  //       setData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -172,7 +157,7 @@ export default function Reservation() {
                   <td className="px-6 py-4">{item.endTime}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>{" "}
+                     
                       Active
                     </div>
                   </td>
