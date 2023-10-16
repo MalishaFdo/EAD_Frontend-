@@ -18,7 +18,8 @@ export default function Register() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (
       !formData.nic ||
       !formData.name ||
@@ -65,6 +66,7 @@ export default function Register() {
         Role: 1,
         password: formData.password,
       };
+      console.log("**************", requestData);
 
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",

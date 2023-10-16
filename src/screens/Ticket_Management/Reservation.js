@@ -11,11 +11,37 @@ export default function Reservation() {
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(getAllTrainSchedules());
+  //       const data = response.data.data;
+  //       console.log("RESPONSE ******", data);
+  //       setData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(getAllTrainSchedules());
-        setData(response.data.data);
+        const allData = response.data.data;
+
+        const today = new Date();
+        const thirtyDaysFromToday = new Date(today);
+        thirtyDaysFromToday.setDate(today.getDate() + 30);
+
+        const filteredData = allData.filter((item) => {
+          const scheduleDate = new Date(item.scheduleDate);
+          return scheduleDate <= thirtyDaysFromToday;
+        });
+
+        setData(filteredData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
