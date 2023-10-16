@@ -10,7 +10,7 @@ import {
 export default function UpdateTrainSchedule() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [ID, setId] = useState("");
+  const [Id, setId] = useState("");
   const [formData, setFormData] = useState({
     departure: "",
     destination: "",
@@ -19,16 +19,39 @@ export default function UpdateTrainSchedule() {
     endTime: "",
   });
 
+  useEffect(() => {
+    const pathParts = location.pathname.split("/");
+    if (pathParts.length >= 3) {
+      const id = pathParts[2];
+      console.log("****************", JSON.stringify(id));
+      setId(id);
+      if (id) {
+        fetchData(id);
+      }
+    }
+  }, []);
+
   const fetchData = async (id) => {
     try {
       await axios
         .get(getByIdTrainSchedules(id))
         .then((result) => {
-          console.log(result);
           if (!result.data) {
             throw new Error("Data is undefined");
           }
-          setFormData(result.data);
+          let data = result.data.data;
+          const date = removeTimeFromDate(result.data.data.scheduleDate);
+          data = {
+            ...data,
+            date: date,
+          };
+          setFormData({
+            departure: data.departure,
+            destination: data.destination,
+            date: date,
+            startTime: data.startTime,
+            endTime: data.endTime,
+          });
         })
         .catch((err) => console.log(err));
     } catch (error) {
@@ -36,21 +59,16 @@ export default function UpdateTrainSchedule() {
     }
   };
 
-  useEffect(() => {
-    const id = location.pathname.split("/")[2];
-    setId(id);
-    if (id) {
-      fetchData(id);
-    }
-  }, [location.pathname]);
+  function removeTimeFromDate(isoString) {
+    const dateTime = new Date(isoString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, "0");
+    const day = String(dateTime.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   function handleClick() {
     navigate("/schedule");
-  }
-
-  function removeTimeFromDate(isoString) {
-    const datePart = isoString.split("T")[0];
-    return datePart.toString();
   }
 
   const updateData = async () => {
@@ -62,12 +80,12 @@ export default function UpdateTrainSchedule() {
       const data = {
         departure: formData.departure,
         destination: formData.destination,
-        date: formData.scheduleDate,
+        date: `${formData.scheduleDate}T00:00:00Z`,
         startTime: formData.startTime,
         endTime: formData.endTime,
       };
       await axios
-        .put(updateByIdTrainSchedules(ID), data, { headers })
+        .patch(updateByIdTrainSchedules(Id), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
       handleClick();
