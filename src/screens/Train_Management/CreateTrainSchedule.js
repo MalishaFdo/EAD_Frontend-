@@ -88,7 +88,7 @@ export default function CreateTrainSchedule() {
         .then((results) => {
           const data = results.data.data;
           setTrainData(data);
-          setTrains({ ...trains, trainId: data._id, trainName: data.name });
+          setTrains({ trainId: data._id, trainName: data.name });
         })
         .catch((error) => console.log(error));
     } catch (error) {
@@ -116,19 +116,10 @@ export default function CreateTrainSchedule() {
     );
 
     if (selectedTrain) {
-      setFormData({ ...formData, trainName: selectedTrainName });
       // Update the train state with the selected train's trainId
       setTrains({
-        ...trains,
         trainId: selectedTrain._id,
-        trainName: selectedTrainName,
-      });
-    } else {
-      setFormData({ ...formData, trainName: "" });
-      // If no matching train is found, you may want to reset the train state as well
-      setTrains({
-        trainId: "", // Set it to an appropriate default value
-        trainName: "",
+        trainName: selectedTrain.trainName,
       });
     }
   };
@@ -159,9 +150,10 @@ export default function CreateTrainSchedule() {
                     name="train"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={handleSelectChange}
-                    value={formData.trainName} // Set the selected value based on formData
+                    onChange={(e) => handleSelectChange(e)}
+                    value={trainData.trainName} // Set the selected value based on formData
                   >
+                    <option value={null}>Select a train</option>
                     {trainData.map((train) => (
                       <option key={train._id} value={train.trainName}>
                         {train.trainName}
