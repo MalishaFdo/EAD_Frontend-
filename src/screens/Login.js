@@ -37,9 +37,18 @@ export default function Login() {
         headers,
       })
       .then((response) => {
-        localStorage.setItem("user", JSON.stringify(response.data.value.data));
-        alert("Login successful!");
-        navigate("/home"); // Navigate to the /home route
+        const user = response.data.value.data;
+        if (user.role === 1 || user.role === 2) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.value.data)
+          );
+          alert("Login successful!");
+          navigate("/home");
+        } else {
+          alert("Only authorized users can login!");
+        }
+        // Navigate to the /home route
       })
       .catch((error) => {
         console.log(error);
