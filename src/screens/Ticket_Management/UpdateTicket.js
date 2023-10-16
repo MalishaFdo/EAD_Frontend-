@@ -66,16 +66,16 @@ export default function UpdateTicket() {
 
   const updateData = async (e) => {
     e.preventDefault();
-    if (
-      !formData.reservationDate ||
-      !formData.reserveCount ||
-      !formData.status
-    ) {
-      // Check if any required field is empty
-      // Display an error message or prevent form submission
-      alert("Please fill in all required fields.");
-      return;
-    }
+    // if (
+    //   !formData.reservationDate ||
+    //   !formData.reserveCount ||
+    //   !formData.status
+    // ) {
+    //   // Check if any required field is empty
+    //   // Display an error message or prevent form submission
+    //   alert("Please fill in all required fields.");
+    //   return;
+    // }
 
     try {
       const headers = {
@@ -92,7 +92,7 @@ export default function UpdateTicket() {
         .patch(updateByIdReservations(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
-        alert("Data Updated successfully!");
+      alert("Data Updated successfully!");
       handleClick();
     } catch (error) {
       alert("Error fetching data:" + error.message);
@@ -208,7 +208,7 @@ export default function UpdateTicket() {
                     />
                     <span className="text-slate-100">Archive</span>
                   </label>
-                  <label className="flex items-center space-x-2">
+                  {/* <label className="flex items-center space-x-2">
                     <input
                       type="radio"
                       name="Status"
@@ -218,7 +218,7 @@ export default function UpdateTicket() {
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
                     />
                     <span className="text-slate-100">Complete</span>
-                  </label>
+                  </label> */}
                 </div>
               </div>
               <div>

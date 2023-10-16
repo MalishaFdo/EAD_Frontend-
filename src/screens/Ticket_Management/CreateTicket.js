@@ -68,11 +68,6 @@ export default function CreateTicket() {
       setNicError(null);
     }
 
-    // if (formData.reserveCount < 4) { 
-    //   return ; 
-    //   // throw new Error("You can reserve a maximum of 4 seats.");
-    // }
-
     try {
       const requestData = {
         trainScheduleId: trainScheduleData.trainScheduleId,

@@ -17,7 +17,6 @@ export default function TicketDetails() {
       try {
         const response = await axios.get(getAllReservations());
         const data = response.data.data;
-        console.log("RESPONSE ******!!!!!!!!!!!!", data);
         setData(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
