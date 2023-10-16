@@ -1,12 +1,11 @@
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import logo from "../images/logo.png";
 import axios from "axios";
 import { userLoginUrlPost } from "../shared/apiUrls";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -16,9 +15,10 @@ export default function Login() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const handleClick = async () => {
+  const handleClick = async (e) => {
+    e.preventDefault();
     if (validateForm()) {
-      await handleLogin();
+      handleLogin();
     }
   };
 
@@ -37,17 +37,9 @@ export default function Login() {
         headers,
       })
       .then((response) => {
-        const email = searchParams.get("email");
-        const password = searchParams.get("password");
-        if (email && password) {
-          searchParams.delete(email);
-          searchParams.delete(password);
-          setSearchParams(searchParams);
-        }
-        if (response.status === 200) {
-          alert("Login successful!");
-          navigate("/home");
-        }
+        localStorage.setItem("user", JSON.stringify(response.data.value.data));
+        alert("Login successful!");
+        navigate("/home"); // Navigate to the /home route
       })
       .catch((error) => {
         console.log(error);
