@@ -74,7 +74,7 @@ export default function CreateTraveler() {
 
       await axios.post(createUserUrlPost(), requestData, { headers });
       alert("Data inserted successfully!");
-      navigate("/schedule");
+      navigate("/travelInfo");
     } catch (error) {
       alert("Error submitting data:" + error.message);
     }

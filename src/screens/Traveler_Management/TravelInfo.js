@@ -7,14 +7,15 @@ import { getAllUsers, deleteUsers } from "../../shared/apiUrls";
 export default function TravelInfo() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(getAllUsers());
         const data = response.data.data;
-        const users = await filterUser(data);
-        setData(users);
+        await filterUser(data);
+        setData(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -24,16 +25,8 @@ export default function TravelInfo() {
   }, []);
 
   async function filterUser(data) {
-    return Object.values(data).filter((d) => d.role === 0);
+    return Object.values(data).filter((d) => d.role == 0);
   }
-
-  // function handleEditClick() {
-  //   if (id) {
-  //     navigate(`/updateTraveler/${id}`);
-  //   } else {
-  //     console.error("Invalid ID:", id);
-  //   }
-  // }
 
   async function handleDeleteClick(nic, _id) {
     // Find the index of the row to delete
@@ -47,6 +40,13 @@ export default function TravelInfo() {
     }
   }
 
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) => item.nic.toLowerCase().includes(searchText.toLowerCase()));
+
   return (
     <>
       <NavBar /> {/* Include the NavBar component at the top */}
@@ -54,7 +54,7 @@ export default function TravelInfo() {
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-3 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-100">
-              Travel Information
+              Traveler Information
             </h2>
           </div>
           <div></div>
@@ -84,10 +84,12 @@ export default function TravelInfo() {
               id="table-search-users"
               class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for users"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -115,7 +117,7 @@ export default function TravelInfo() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {filteredData.map((item, index) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -166,7 +168,7 @@ export default function TravelInfo() {
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => handleDeleteClick(item.nic, index)}
+                      onClick={() => handleDeleteClick(item.nic)}
                     >
                       {/* Delete Icon */}
                       <svg

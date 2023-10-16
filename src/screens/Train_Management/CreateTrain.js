@@ -11,7 +11,8 @@ export default function CreateTrain() {
     seatCount: "",
   });
 
-  const fetchData = async () => {
+  const fetchData = async (e) => {
+    e.preventDefault();
     if (!formData.trainName || !formData.seatCount) {
       // Check if any required field is empty
       // Display an error message or prevent form submission
@@ -36,20 +37,12 @@ export default function CreateTrain() {
 
         const createdTrain = response.data.data._id;
         localStorage.setItem("trainId", createdTrain);
-
-        //navigate("/trainschedule");
+        alert("Data inserted successfully!");
+        navigate("/alltrains");
       }
     } catch (error) {
       alert("Error submitting data:" + error.message);
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.seatCount.length < 1) {
-      return;
-    }
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (

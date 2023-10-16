@@ -45,7 +45,6 @@ export default function UpdateTraveler() {
 
   function handleClick() {
     navigate("/travelInfo");
-    alert("Data inserted successfully!");
   }
 
   const updateData = async (e) => {
