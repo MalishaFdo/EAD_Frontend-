@@ -87,9 +87,9 @@ export default function CreateTicket() {
       setNicError(null);
     }
 
-    if (formData.reserveCount > 4) {
-      alert("You can reserve a maximum of 4 seats.");
-      return;
+    if (formData.reserveCount < 4) {
+      return ; 
+      // throw new Error("You can reserve a maximum of 4 seats.");
     }
 
     try {

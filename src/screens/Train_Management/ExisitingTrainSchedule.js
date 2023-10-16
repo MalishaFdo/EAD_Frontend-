@@ -53,7 +53,7 @@ export default function ExistingTrainSchedule() {
   }
 
   // Filter data based on the search text
-  const filteredData = data.filter((item) => item.scheduleDate.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredData = data.filter((item) => item.departure.toLowerCase().includes(searchText.toLowerCase()));
 
   return (
     <>

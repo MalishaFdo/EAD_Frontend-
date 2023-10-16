@@ -9,6 +9,7 @@ export default function Reservation() {
   const [trainScheduleId, setTrainScheduleId] = useState("");
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +43,13 @@ export default function Reservation() {
       setData(newData);
     }
   }
+
+  function handleSearchChange(event) {
+    setSearchText(event.target.value);
+  }
+
+  // Filter data based on the search text
+  const filteredData = data.filter((item) => item.destination.toLowerCase().includes(searchText.toLowerCase()));
 
   return (
     <>
@@ -80,10 +88,12 @@ export default function Reservation() {
               id="table-search-users"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for trains"
+              value={searchText}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
-        {data.length === 0 ? (
+        {filteredData.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             No data available.
           </p>
@@ -119,7 +129,7 @@ export default function Reservation() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {filteredData.map((item) => (
                 <tr
                   key={item._id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -152,15 +162,12 @@ export default function Reservation() {
                   </td>
                   <td className="px-6 py-4">
                     <Link
-                      to={`/createTicket?departure=${
-                        item.departure
-                      }&destination=${item.destination}&availableSeats=${
-                        item.availableSeatCount
-                      }&date=${removeTimeFromDate(
-                        item.scheduleDate
-                      )}&startTime=${item.startTime}&endTime=${
-                        item.endTime
-                      }&trainScheduleId=${item._id}`}
+                      to={`/createTicket?departure=${item.departure
+                        }&destination=${item.destination}&availableSeats=${item.availableSeatCount
+                        }&date=${removeTimeFromDate(
+                          item.scheduleDate
+                        )}&startTime=${item.startTime}&endTime=${item.endTime
+                        }&trainScheduleId=${item._id}`}
                     >
                       <button
                         type="submit"
