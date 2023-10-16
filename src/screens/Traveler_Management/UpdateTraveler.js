@@ -48,7 +48,8 @@ export default function UpdateTraveler() {
     alert("Data inserted successfully!");
   }
 
-  const updateData = async () => {
+  const updateData = async (e) => {
+    e.preventDefault();
     if (
       !formData.name ||
       !formData.email ||
@@ -98,6 +99,7 @@ export default function UpdateTraveler() {
         .patch(updateByIdUser(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
+        alert("Data Updated successfully!");
       handleClick();
       //}
     } catch (error) {

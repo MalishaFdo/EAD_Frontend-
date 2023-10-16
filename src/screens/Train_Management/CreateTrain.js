@@ -11,10 +11,6 @@ export default function CreateTrain() {
     seatCount: "",
   });
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
   const fetchData = async () => {
     if (!formData.trainName || !formData.seatCount) {
       // Check if any required field is empty

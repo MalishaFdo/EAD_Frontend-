@@ -1,6 +1,5 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import axios from "axios";
 import {
@@ -12,6 +11,7 @@ export default function UpdateTicket() {
   const navigate = useNavigate();
   const location = useLocation();
   const [ID, setId] = useState("");
+
   const [formData, setFormData] = useState({
     nic: "",
     reservationDate: "",
@@ -24,11 +24,21 @@ export default function UpdateTicket() {
       await axios
         .get(getByIdReservations(id))
         .then((result) => {
-          console.log(result);
           if (!result.data) {
             throw new Error("Data is undefined");
           }
-          setFormData(result.data);
+          let data = result.data.data;
+          const date = removeTimeFromDate(data.reservationDate);
+          data = {
+            ...data,
+            reservationDate: date,
+          };
+          setFormData({
+            nic: data.nic,
+            reservationDate: date,
+            reserveCount: data.reserveCount,
+            status: data.status,
+          });
         })
         .catch((err) => console.log(err));
     } catch (error) {
@@ -47,11 +57,15 @@ export default function UpdateTicket() {
   }
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split("T")[0];
-    return datePart.toString();
+    const dateTime = new Date(isoString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, "0");
+    const day = String(dateTime.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
-  const updateData = async () => {
+  const updateData = async (e) => {
+    e.preventDefault();
     if (
       !formData.reservationDate ||
       !formData.reserveCount ||
@@ -69,15 +83,16 @@ export default function UpdateTicket() {
       };
 
       const data = {
-        nic: formData.nic,
+        // nic: formData.nic,
         reservationDate: formData.reservationDate,
         reserveCount: formData.reserveCount,
-        status: Number(formData.status),
+        status: formData.status,
       };
       await axios
-        .put(updateByIdReservations(ID), data, { headers })
+        .patch(updateByIdReservations(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
+        alert("Data Updated successfully!");
       handleClick();
     } catch (error) {
       alert("Error fetching data:" + error.message);
@@ -162,9 +177,9 @@ export default function UpdateTicket() {
                     autoComplete="seats"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={formData.seatCount}
+                    value={formData.reserveCount}
                     onChange={(e) =>
-                      setFormData({ ...formData, seatCount: e.target.value })
+                      setFormData({ ...formData, reserveCount: e.target.value })
                     }
                   />
                 </div>
@@ -176,10 +191,9 @@ export default function UpdateTicket() {
                       type="radio"
                       name="Status"
                       value="Active"
+                      checked={formData.status === 0}
+                      onChange={() => setFormData({ ...formData, status: 0 })}
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: e.target.value })
-                      }
                     />
                     <span className="text-slate-100">Active</span>
                   </label>
@@ -188,10 +202,9 @@ export default function UpdateTicket() {
                       type="radio"
                       name="Status"
                       value="Archive"
+                      checked={formData.status === 1}
+                      onChange={() => setFormData({ ...formData, status: 1 })}
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: e.target.value })
-                      }
                     />
                     <span className="text-slate-100">Archive</span>
                   </label>
@@ -200,10 +213,9 @@ export default function UpdateTicket() {
                       type="radio"
                       name="Status"
                       value="Archive"
+                      checked={formData.status === 2}
+                      onChange={() => setFormData({ ...formData, status: 2 })}
                       className="form-radio h-4 w-4 text-indigo-600 border-indigo-600 focus:ring-indigo-500"
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: e.target.value })
-                      }
                     />
                     <span className="text-slate-100">Complete</span>
                   </label>

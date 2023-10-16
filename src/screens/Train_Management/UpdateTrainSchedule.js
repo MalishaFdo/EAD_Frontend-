@@ -53,7 +53,8 @@ export default function UpdateTrainSchedule() {
     return datePart.toString();
   }
 
-  const updateData = async () => {
+  const updateData = async (e) => {
+    e.preventDefault();
     try {
       const headers = {
         "Content-Type": "application/json;charset=UTF-8",
@@ -70,6 +71,7 @@ export default function UpdateTrainSchedule() {
         .put(updateByIdTrainSchedules(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
+        alert("Data Updated successfully!");
       handleClick();
     } catch (error) {
       console.error("Error fetching data:", error);

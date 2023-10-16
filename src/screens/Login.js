@@ -1,12 +1,11 @@
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import logo from "../images/logo.png";
 import axios from "axios";
 import { userLoginUrlPost } from "../shared/apiUrls";
 
 export default function Login() {
   const navigate = useNavigate();
-  // const [searchParams, setSearchParams] = useSearchParams();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,13 +18,11 @@ export default function Login() {
   const handleClick = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      await handleLogin();
+      handleLogin();
     }
   };
 
   const handleLogin = async () => {
-
-
     const requestData = {
       email: formData.email,
       password: formData.password,
@@ -35,59 +32,28 @@ export default function Login() {
       "Content-Type": "application/json;charset=UTF-8",
     };
 
-    try {
-      const response = await fetch("https://localhost:44346/api/User/login", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(requestData),
+    await axios
+      .post(userLoginUrlPost(), requestData, {
+        headers,
+      })
+      .then((response) => {
+        const user = response.data.value.data;
+        if (user.role === 1 || user.role === 2) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.value.data)
+          );
+          alert("Login successful!");
+          navigate("/home");
+        } else {
+          alert("Only authorized users can login!");
+        }
+        // Navigate to the /home route
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error submitting data: " + error.message);
       });
-
-      if (response.status === 200) {
-        navigate("/home");
-        // alert("Login successful!");
-        // history.push("/home"); // Redirect to the home page
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Error submitting data: " + error.message);
-    }
-
-
-
-
-
-
-    //   const requestData = {
-    //   email: formData.email,
-    //   password: formData.password,
-    // };
-
-    // const headers = {
-    //   "Content-Type": "application/json;charset=UTF-8",
-    // };
-
-    // await axios
-    //   .post(userLoginUrlPost(), requestData, {
-    //     headers,
-    //   })
-    //   .then((response) => {
-    // const email = searchParams.get("email");
-    // const password = searchParams.get("password");
-    // if (email && password) {
-    //   searchParams.delete(email);
-    //   searchParams.delete(password);
-    //   setSearchParams(searchParams);
-    // }
-    //   if (response.status === 200) {
-    //     alert("Login successful!");
-    //     navigate("/home");
-    //     // window.location.href("/home")
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    //   alert("Error submitting data: " + error.message);
-    // });
   };
 
   const validateForm = () => {
@@ -98,19 +64,19 @@ export default function Login() {
       isValid = false;
     }
 
-    // if (!validateEmail(formData.email)) {
-    //   alert("Invalid email address. Please enter a valid email.");
-    //   isValid = false;
-    // } else {
-    //   setEmailError(null);
-    // }
+    if (!validateEmail(formData.email)) {
+      alert("Invalid email address. Please enter a valid email.");
+      isValid = false;
+    } else {
+      setEmailError(null);
+    }
 
-    // if (formData.password.length < 8) {
-    //   alert("Password must be at least 8 characters long.");
-    //   isValid = false;
-    // } else {
-    //   setPasswordError(null);
-    // }
+    if (formData.password.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      isValid = false;
+    } else {
+      setPasswordError(null);
+    }
 
     return isValid;
   };
@@ -119,12 +85,6 @@ export default function Login() {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(email);
   };
-
-
-
-  function redirectfunc() {
-    navigate("/home");
-  }
 
   return (
     <>
@@ -221,7 +181,6 @@ export default function Login() {
                 Register Here !!!
               </a>
             </p>
-            <button onClick={redirectfunc}>Clickme</button>
           </div>
         </div>
       </div>

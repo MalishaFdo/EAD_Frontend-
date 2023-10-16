@@ -27,8 +27,11 @@ export default function TicketDetails() {
   }, []);
 
   function removeTimeFromDate(isoString) {
-    const datePart = isoString.split("T")[0];
-    return datePart.toString();
+    const dateTime = new Date(isoString);
+    const year = dateTime.getFullYear();
+    const month = String(dateTime.getMonth() + 1).padStart(2, "0");
+    const day = String(dateTime.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
   async function handleDeleteClick(_id) {

@@ -72,7 +72,8 @@ export default function CreateTicket() {
     }
   }, []);
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (!formData.nic || !formData.reserveCount) {
       // Check if any required field is empty
       // Display an error message or prevent form submission

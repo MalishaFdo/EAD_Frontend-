@@ -4,10 +4,8 @@ import NavBar from "../../components/NavBar";
 import axios from "axios";
 import { createTrainScheduleUrlPost, getAllTrains } from "../../shared/apiUrls";
 
-//import { useAlert } from "react-alert";
 
 export default function CreateTrainSchedule() {
-  //const alert = useAlert();
   const [trains, setTrains] = useState({
     trainName: "",
     trainId: "",
@@ -35,7 +33,8 @@ export default function CreateTrainSchedule() {
     return dateObject.toISOString();
   }
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (
       !formData.departure ||
       !formData.destination ||

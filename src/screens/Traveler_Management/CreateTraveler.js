@@ -18,7 +18,8 @@ export default function CreateTraveler() {
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
 
-  const sendData = async () => {
+  const sendData = async (e) => {
+    e.preventDefault();
     if (
       !formData.nic ||
       !formData.name ||
