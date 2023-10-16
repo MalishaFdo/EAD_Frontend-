@@ -53,7 +53,7 @@ export default function CreateTrainSchedule() {
         trainId: trains.trainId,
         departure: formData.departure,
         destination: formData.destination,
-        scheduleDate: "2023-10-11T14:14:31.609Z",
+        scheduleDate: formData.scheduleDate,
         startTime: formData.startTime,
         endTime: formData.endTime,
       };
