@@ -12,7 +12,6 @@ export default function UpdateTraveler() {
     name: "",
     email: "",
     password: "",
-    nic: "",
     status: "",
     role: "",
   });
@@ -54,7 +53,6 @@ export default function UpdateTraveler() {
       !formData.name ||
       !formData.email ||
       !formData.password ||
-      !formData.nic ||
       !formData.status
     ) {
       // Check if any required field is empty
@@ -90,7 +88,6 @@ export default function UpdateTraveler() {
       };
 
       const data = {
-        nic: formData.nic,
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -98,7 +95,7 @@ export default function UpdateTraveler() {
         status: Number(formData.status),
       };
       await axios
-        .put(updateByIdUser(ID), data, { headers })
+        .patch(updateByIdUser(ID), data, { headers })
         .then((result) => console.log(result))
         .catch((error) => console.log(error));
       handleClick();
